@@ -31,6 +31,8 @@ const Login = () => {
   //CONTEXT
   const { user, storeToken, authenticateUser } = useContext(AuthContext);
 
+  console.log(import.meta.env.VITE_FALLBACK_IMG);
+
   //HANDLES
   const handleLogin = async (e) => {
     if (e) e.preventDefault();
