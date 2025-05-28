@@ -2,8 +2,8 @@ import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import authService from "@/services/auth.service";
 import { AuthContext } from "@/context/auth.context";
-import ReCAPTCHA from "react-google-recaptcha";
-import { getRecaptchaKey } from "@/config/envVar.config";
+// import ReCAPTCHA from "react-google-recaptcha";
+// import { getRecaptchaKey } from "@/config/envVar.config";
 
 //COMPONENTS
 import { Siren, UserRoundPlus } from "lucide-react";

@@ -1,6 +1,6 @@
-export function getRecaptchaKey() {
-  return import.meta.env.VITE_RECAPTCHA_SITE_KEY;
-}
+// export function getRecaptchaKey() {
+//   return import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+// }
 
 const FALLBACK_IMG =
   import.meta.env.VITE_FALLBACK_IMG ||
