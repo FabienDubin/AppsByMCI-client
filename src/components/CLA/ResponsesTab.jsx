@@ -43,7 +43,7 @@ export default function ResponsesTab() {
             ))}
         </div>
       ) : (
-        <Table>
+        <Table className="rounded-md border">
           <TableHeader>
             <TableRow>
               <TableHead>Nom</TableHead>
