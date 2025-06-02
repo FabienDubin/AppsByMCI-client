@@ -14,20 +14,20 @@ const MercedesDashboard = () => {
         <CarFront className="mr-2" />
         Mercedes CLA
       </h1>
-      <Tabs defaultValue="config" className="w-full">
+      <Tabs defaultValue="responses" className="w-full">
         <TabsList>
-          <TabsTrigger value="config">
-            <Cog className="mr-2" /> Config
-          </TabsTrigger>
           <TabsTrigger value="responses">
             <MessageSquareReply className="mr-2" /> Réponses
           </TabsTrigger>
+          <TabsTrigger value="config">
+            <Cog className="mr-2" /> Config
+          </TabsTrigger>
         </TabsList>
-        <TabsContent value="config">
-          <ConfigTab />
-        </TabsContent>
         <TabsContent value="responses">
           <ResponsesTab />
+        </TabsContent>
+        <TabsContent value="config">
+          <ConfigTab />
         </TabsContent>
       </Tabs>
     </div>

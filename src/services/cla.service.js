@@ -41,8 +41,8 @@ class CLAService {
   };
 
   // ✅ GET /cla/results
-  getResults = async () => {
-    const res = await this.api.get("/cla/results");
+  getResults = async (page, limit) => {
+    const res = await this.api.get(`/cla/results?page=${page}&limit=${limit}`);
     return res.data;
   };
 }

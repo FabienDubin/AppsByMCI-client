@@ -9,16 +9,30 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import ResultSheet from "./ResultSheet";
 
 export default function ResponsesTab() {
   const [responses, setResponses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(null);
+  const [totalResults, setTotalResults] = useState(null);
+  const limit = 8;
 
-  const fetchResponses = async () => {
+  //Sheet management
+  const [selectedResponse, setSelectedResponse] = useState(null);
+  const [sheetOpen, setSheetOpen] = useState(false);
+
+  const fetchResponses = async (currentPage, currentLimit) => {
     try {
-      const data = await claService.getResults();
+      console.log("the req", currentPage, limit);
+      const data = await claService.getResults(currentPage, limit);
+      console.log(data);
       setResponses(data);
+      setTotalPages(data.totalPages);
+      setTotalResults(data.totalResults);
     } catch (err) {
       console.error("Erreur lors du chargement des réponses :", err);
     } finally {
@@ -26,9 +40,17 @@ export default function ResponsesTab() {
     }
   };
 
+  //FUNCTIONS
+  // Move to the page number
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setPage(pageNumber);
+    }
+  };
+
   useEffect(() => {
-    fetchResponses();
-  }, []);
+    fetchResponses(page, limit);
+  }, [page]);
 
   return (
     <div className="p-4">
@@ -43,7 +65,7 @@ export default function ResponsesTab() {
             ))}
         </div>
       ) : (
-        <Table>
+        <Table className="rounded-md border">
           <TableHeader>
             <TableRow>
               <TableHead>Nom</TableHead>
@@ -54,8 +76,15 @@ export default function ResponsesTab() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {responses.map((r) => (
-              <TableRow key={r._id}>
+            {responses.results.map((r) => (
+              <TableRow
+                key={r._id}
+                className="cursor-pointer hover:bg-muted"
+                onClick={() => {
+                  setSelectedResponse(r);
+                  setSheetOpen(true);
+                }}
+              >
                 <TableCell>{r.name}</TableCell>
                 <TableCell>{r.gender}</TableCell>
                 <TableCell>{r.answers.join(", ")}</TableCell>
@@ -85,6 +114,36 @@ export default function ResponsesTab() {
             ))}
           </TableBody>
         </Table>
+      )}
+
+      {/* Bottom block with the users displayed count and the navigation throw pages buttons */}
+      <div className="flex justify-between items-center w-full py-4">
+        <p className="font-thin text-sm italic">{totalResults} réponses </p>
+        <div>
+          <Button
+            onClick={() => handlePageChange(page - 1)}
+            disabled={page === 1}
+            variant="outline"
+            className="mx-2"
+          >
+            Prev
+          </Button>
+          <Button
+            onClick={() => handlePageChange(page + 1)}
+            disabled={page === totalPages}
+            variant="outline"
+            className="mx-2"
+          >
+            Next
+          </Button>
+        </div>
+      </div>
+      {selectedResponse && (
+        <ResultSheet
+          open={sheetOpen}
+          onOpenChange={setSheetOpen}
+          response={selectedResponse}
+        />
       )}
     </div>
   );
