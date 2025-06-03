@@ -18,7 +18,13 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 //MEDIAS
-import { Home, SquareUserRound, Settings2, CarFront } from "lucide-react";
+import {
+  Home,
+  SquareUserRound,
+  Settings2,
+  CarFront,
+  BookOpen,
+} from "lucide-react";
 
 import Logo from "../Logo";
 
@@ -28,6 +34,7 @@ const items = [
   { title: "Dashboard", url: "/dashboard", icon: Home },
   { title: "Users", url: "/dashboard/users", icon: SquareUserRound },
   { title: "Mercedes", url: "/dashboard/mercedes", icon: CarFront },
+  { title: "Yearbook", url: "/dashboard/yearbook", icon: BookOpen },
   { title: "Setting", url: "/dashboard/settings", icon: Settings2 },
 ];
 

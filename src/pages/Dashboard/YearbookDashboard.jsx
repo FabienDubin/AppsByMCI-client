@@ -4,23 +4,24 @@ import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 //MEDIAS
-import { CarFront, Cog, MessageSquareReply } from "lucide-react";
-import ConfigTab from "@/components/CLA/ConfigTab";
-import ResponsesTab from "@/components/CLA/ResponsesTab";
-const MercedesDashboard = () => {
+import { BookOpen, Cog, MessageSquareReply } from "lucide-react";
+import ConfigTab from "@/components/Yearbook/ConfigTab";
+import ResponsesTab from "@/components/Yearbook/ResponsesTab";
+
+const YearbookDashboard = () => {
   return (
     <div className="w-full min-h-screen">
       <h1 className="flex items-center text-2xl font-bold p-4 w-full">
-        <CarFront className="mr-2" />
-        Mercedes CLA
+        <BookOpen className="mr-2" />
+        Yearbook
       </h1>
-      <Tabs defaultValue="respongit ses" className="w-full">
+      <Tabs defaultValue="responses" className="w-full">
         <TabsList>
           <TabsTrigger value="responses">
-            <MessageSquareReply className="mr-2" /> Réponses
+            <MessageSquareReply className="mr-2" /> Soumissions
           </TabsTrigger>
           <TabsTrigger value="config">
-            <Cog className="mr-2" /> Config
+            <Cog className="mr-2" /> Configuration
           </TabsTrigger>
         </TabsList>
         <TabsContent value="responses">
@@ -34,4 +35,4 @@ const MercedesDashboard = () => {
   );
 };
 
-export default MercedesDashboard;
+export default YearbookDashboard;
