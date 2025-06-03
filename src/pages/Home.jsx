@@ -13,12 +13,20 @@ const Home = () => {
   const nav = useNavigate();
 
   return (
-    <div className="h-screen flex items-center">
-      <h1 className="text-9xl font-bold mx-4 my-8 drop-shadow-xl">
+    <div className="h-screen flex flex-col items-center">
+      <h1 className="text-6xl font-bold mx-4 mt-16 drop-shadow-xl">
         Welcome to the home page
       </h1>
       {user && (
-        <Button onClick={() => nav("/mercedesCLA")}>Mercedes CLA</Button>
+        <div className="flex flex-col m-4 w-56">
+          <h1 className="font-semibold text-xl text-center">Choose an app</h1>
+          <Button className="m-4 " onClick={() => nav("/mercedesCLA")}>
+            Mercedes CLA
+          </Button>
+          <Button className="m-4" onClick={() => nav("/yearbook")}>
+            Yearbook
+          </Button>
+        </div>
       )}
     </div>
   );
