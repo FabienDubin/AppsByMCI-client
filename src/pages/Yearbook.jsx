@@ -26,7 +26,7 @@ const messages = [
   "Insertion de la vibe lycée américain années 90 🏫🇺🇸...",
   "Synchronisation avec le style 'Senior Portrait' 📸...",
   "Retouche des couleurs façon papier glacé nostalgique...",
-  "Votre nom est inscrit dans le yearbook 🖋️...",..",
+  "Votre nom est inscrit dans le yearbook 🖋️...",
 ];
 
 const Yearbook = () => {
