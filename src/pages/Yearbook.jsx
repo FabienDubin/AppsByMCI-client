@@ -4,7 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, Camera, Upload, Download } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Loader2, Camera, Upload, Download, Siren } from "lucide-react";
 
 //THEME
 import { useTheme } from "@/components/ThemeProvider";
@@ -29,7 +30,7 @@ const Yearbook = () => {
   const [loading, setLoading] = useState(false);
   const [randomMessage, setRandomMessage] = useState("");
   const [config, setConfig] = useState(null);
-
+  const [alertMessage, setAlertMessage] = useState(null);
   // Refs
   const fileInputRef = useRef(null);
   const videoRef = useRef(null);
@@ -165,7 +166,7 @@ const Yearbook = () => {
       setStep(5);
     } catch (err) {
       console.error(err);
-      alert("Erreur lors de la génération de l'image");
+      setAlertMessage(err.response.data);
       setStep(3);
     } finally {
       setLoading(false);
@@ -181,6 +182,7 @@ const Yearbook = () => {
     setGeneratedImageUrl(null);
     setStep(0);
     stopCamera();
+    setAlertMessage(null);
   };
 
   // Cleanup camera on unmount
@@ -192,192 +194,192 @@ const Yearbook = () => {
 
   return (
     <div className="bg-[url(https://storagemercedescla01.blob.core.windows.net/background/shutterstock_2501601971.jpg)] min-h-screen">
-      <div className="relative z-10 max-w-xl mx-auto px-4 py-8 space-y-6">
+      <div className="z-10 max-w-xl mx-auto px-4 py-8 space-y-6">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-white mb-2">Yearbook</h1>
           <p className="text-gray-400">Créez votre photo de promo rétro</p>
         </div>
-
         {step < 4 && <Progress value={progress} />}
-
-        {/* Step 0: User info */}
-        {step === 0 && (
-          <Card>
-            <CardHeader>
-              <CardTitle>Qui êtes-vous ?</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Input
-                placeholder="Votre prénom"
-                value={user.name}
-                onChange={(e) => setUser({ ...user, name: e.target.value })}
-              />
-              <div className="flex gap-4">
-                {["Homme", "Femme", "Autre"].map((g) => (
-                  <Button
-                    key={g}
-                    variant={user.gender === g ? "default" : "outline"}
-                    onClick={() => setUser({ ...user, gender: g })}
-                  >
-                    {g}
-                  </Button>
-                ))}
-              </div>
-              <Input
-                placeholder="Code d'accès"
-                value={user.code}
-                onChange={(e) => setUser({ ...user, code: e.target.value })}
-              />
-              <Button
-                className="w-full mt-4"
-                onClick={() => setStep(1)}
-                disabled={!user.name || !user.code}
-              >
-                Continuer
-              </Button>
-            </CardContent>
-          </Card>
+        {alertMessage && (
+          <Alert>
+            <AlertTitle className="flex items-end">
+              <Siren /> {alertMessage.message}
+            </AlertTitle>
+            <AlertDescription></AlertDescription>
+            <Button variant="secondary" className="mt-2" onClick={restart}>
+              Recommencer
+            </Button>
+          </Alert>
         )}
-
-        {/* Step 1: Choose photo method */}
-        {step === 1 && (
-          <Card>
-            <CardHeader>
-              <CardTitle>
-                Comment souhaitez-vous ajouter votre photo ?
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Button
-                className="w-full flex items-center gap-2"
-                onClick={() => setStep(2)}
-              >
-                <Camera className="w-4 h-4" />
-                Prendre un selfie
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full flex items-center gap-2"
-                onClick={() => {
-                  setStep(3);
-                  fileInputRef.current?.click();
-                }}
-              >
-                <Upload className="w-4 h-4" />
-                Choisir une photo existante
-              </Button>
-              <Button variant="ghost" onClick={handleBack}>
-                ← Revenir
-              </Button>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Step 2: Camera */}
-        {step === 2 && (
-          <Card>
-            <CardHeader>
-              <CardTitle>Prenez votre selfie</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="relative">
-                <video
-                  ref={videoRef}
-                  autoPlay
-                  playsInline
-                  className="w-full rounded-lg"
-                  style={{ transform: "scaleX(-1)" }}
-                />
-                <canvas ref={canvasRef} className="hidden" />
-              </div>
-
-              <div className="flex gap-4">
-                {!isCameraActive ? (
-                  <Button onClick={startCamera} className="flex-1">
-                    <Camera className="w-4 h-4 mr-2" />
-                    Démarrer la caméra
-                  </Button>
-                ) : (
-                  <>
-                    <Button onClick={takePhoto} className="flex-1">
-                      Prendre la photo
-                    </Button>
-                    <Button variant="outline" onClick={stopCamera}>
-                      Arrêter
-                    </Button>
-                  </>
-                )}
-              </div>
-
-              <Button variant="ghost" onClick={handleBack}>
-                ← Revenir
-              </Button>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Step 3: Preview and confirm */}
-        {step === 3 && (
-          <Card>
-            <CardHeader>
-              <CardTitle>Confirmez votre photo</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {imagePreview && (
-                <div className="text-center">
-                  <img
-                    src={imagePreview}
-                    alt="Preview"
-                    className="rounded-lg shadow-md max-w-full max-h-64 mx-auto"
-                  />
-                </div>
-              )}
-
-              <div className="flex gap-4">
-                <Button
-                  variant="outline"
-                  onClick={() => fileInputRef.current?.click()}
-                  className="flex-1"
-                >
-                  <Upload className="w-4 h-4 mr-2" />
-                  Changer la photo
-                </Button>
-                <Button
-                  onClick={handleGenerate}
-                  disabled={!selectedImage}
-                  className="flex-1"
-                >
-                  Générer mon yearbook
-                </Button>
-              </div>
-
-              <Button variant="ghost" onClick={handleBack}>
-                ← Revenir
-              </Button>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Step 4: Loading */}
-        {step === 4 && (
-          <div className="text-center space-y-6 py-12">
-            <Loader2 className="mx-auto animate-spin h-20 w-20 text-gray-600" />
-            <p className="text-lg text-white">{randomMessage}</p>
-            <p className="text-muted-foreground">Génération en cours...</p>
-          </div>
-        )}
-
-        {/* Step 5: Result */}
-        {step === 5 && originalImageUrl && generatedImageUrl && (
-          <div className="space-y-4">
-            <Card>
+        <div>
+          {/* Step 0: User info */}
+          {step === 0 && (
+            <Card className="h-2/3">
               <CardHeader>
-                <CardTitle className="text-center">
-                  Votre transformation yearbook
-                </CardTitle>
+                <CardTitle>Qui êtes-vous ?</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Input
+                  placeholder="Votre prénom"
+                  value={user.name}
+                  onChange={(e) => setUser({ ...user, name: e.target.value })}
+                />
+                <div className="flex gap-4">
+                  {["Homme", "Femme", "Autre"].map((g) => (
+                    <Button
+                      key={g}
+                      variant={user.gender === g ? "default" : "outline"}
+                      onClick={() => setUser({ ...user, gender: g })}
+                    >
+                      {g}
+                    </Button>
+                  ))}
+                </div>
+                <Input
+                  placeholder="Code d'accès"
+                  value={user.code}
+                  onChange={(e) => setUser({ ...user, code: e.target.value })}
+                />
+                <Button
+                  className="w-full mt-4"
+                  onClick={() => setStep(1)}
+                  disabled={!user.name || !user.code}
+                >
+                  Continuer
+                </Button>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Step 1: Choose photo method */}
+          {step === 1 && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Ajoutez une photo pour votre yearbook ?</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Button
+                  className="w-full flex items-center gap-2"
+                  onClick={() => setStep(2)}
+                >
+                  <Camera className="w-4 h-4" />
+                  Prendre un selfie
+                </Button>
+                <Button
+                  variant="outline"
+                  className="w-full flex items-center gap-2"
+                  onClick={() => {
+                    setStep(3);
+                    fileInputRef.current?.click();
+                  }}
+                >
+                  <Upload className="w-4 h-4" />
+                  Choisir une photo existante
+                </Button>
+                <Button variant="ghost" onClick={handleBack}>
+                  ← Revenir
+                </Button>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Step 2: Camera */}
+          {step === 2 && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Prenez votre selfie</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="relative">
+                  <video
+                    ref={videoRef}
+                    autoPlay
+                    playsInline
+                    className="w-full rounded-lg"
+                    style={{ transform: "scaleX(-1)" }}
+                  />
+                  <canvas ref={canvasRef} className="hidden" />
+                </div>
+
+                <div className="flex gap-4">
+                  {!isCameraActive ? (
+                    <Button onClick={startCamera} className="flex-1">
+                      <Camera className="w-4 h-4 mr-2" />
+                      Démarrer la caméra
+                    </Button>
+                  ) : (
+                    <>
+                      <Button onClick={takePhoto} className="flex-1">
+                        Prendre la photo
+                      </Button>
+                      <Button variant="outline" onClick={stopCamera}>
+                        Arrêter
+                      </Button>
+                    </>
+                  )}
+                </div>
+
+                <Button variant="ghost" onClick={handleBack}>
+                  ← Revenir
+                </Button>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Step 3: Preview and confirm */}
+          {step === 3 && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Confirmez votre photo</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {imagePreview && (
+                  <div className="text-center">
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      className="rounded-lg shadow-md max-w-full max-h-64 mx-auto"
+                    />
+                  </div>
+                )}
+
+                <div className="flex gap-4">
+                  <Button
+                    onClick={handleGenerate}
+                    disabled={!selectedImage}
+                    className="flex-1"
+                  >
+                    Générer mon yearbook
+                  </Button>
+                </div>
+
+                <Button variant="ghost" onClick={handleBack}>
+                  ← Revenir
+                </Button>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Step 4: Loading */}
+          {step === 4 && (
+            <div className="text-center space-y-6 py-12">
+              <Loader2 className="mx-auto animate-spin h-20 w-20 text-gray-600" />
+              <p className="text-lg text-white">{randomMessage}</p>
+              <p className="text-muted-foreground">Génération en cours...</p>
+            </div>
+          )}
+
+          {/* Step 5: Result */}
+          {step === 5 && originalImageUrl && generatedImageUrl && (
+            <div className="space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-center">
+                    Votre transformation yearbook
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="text-center">
                     <p className="text-sm text-muted-foreground mb-2">
                       Photo originale
@@ -388,44 +390,45 @@ const Yearbook = () => {
                       className="rounded-lg shadow-md w-full"
                     />
                   </div> */}
-                <div className="text-center">
-                  <p className="text-sm text-muted-foreground mb-2">
-                    Style yearbook
-                  </p>
-                  <img
-                    src={generatedImageUrl}
-                    alt="Photo yearbook"
-                    className="rounded-lg shadow-md w-full"
-                  />
-                </div>
-                {/* </div> */}
+                  <div className="text-center">
+                    <p className="text-sm text-muted-foreground mb-2">
+                      Style yearbook
+                    </p>
+                    <img
+                      src={generatedImageUrl}
+                      alt="Photo yearbook"
+                      className="rounded-lg shadow-md w-full"
+                    />
+                  </div>
+                  {/* </div> */}
 
-                <div className="flex gap-4 justify-center mt-6">
-                  <Button
-                    className="flex-1"
-                    onClick={() => {
-                      window.open(
-                        generatedImageUrl,
-                        "_blank",
-                        "noopener,noreferrer"
-                      );
-                    }}
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Télécharger
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    className="flex-1"
-                    onClick={restart}
-                  >
-                    Recommencer
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        )}
+                  <div className="flex gap-4 justify-center mt-6">
+                    <Button
+                      className="flex-1"
+                      onClick={() => {
+                        window.open(
+                          generatedImageUrl,
+                          "_blank",
+                          "noopener,noreferrer"
+                        );
+                      }}
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      Télécharger
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      className="flex-1"
+                      onClick={restart}
+                    >
+                      Recommencer
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+        </div>
 
         {/* Hidden file input */}
         <input
