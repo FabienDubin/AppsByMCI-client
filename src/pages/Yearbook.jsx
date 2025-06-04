@@ -17,6 +17,16 @@ const messages = [
   "Application des filtres nostalgiques...",
   "Création de l'ambiance prom night...",
   "Finalisation de votre portrait yearbook...",
+  "Chargement du fond studio typique des yearbooks 📘...",
+  "Ajustement de la pose 'photo de classe' 😎...",
+  "Ajout du blazer et du sourire figé 🧥🪞...",
+  "Éclairage façon bal de promo en préparation ✨...",
+  "Encadrement de la photo dans la page 1994...",
+  "Traitement du brushing et des mèches rebelles 💇‍♀️...",
+  "Insertion de la vibe lycée américain années 90 🏫🇺🇸...",
+  "Synchronisation avec le style 'Senior Portrait' 📸...",
+  "Retouche des couleurs façon papier glacé nostalgique...",
+  "Votre nom est inscrit dans le yearbook 🖋️...",..",
 ];
 
 const Yearbook = () => {
