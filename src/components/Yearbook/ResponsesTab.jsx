@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useToast } from "@/hooks/use-toast";
 import yearbookService from "@/services/yearbook.service";
 import {
   Table,
@@ -17,16 +18,39 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Eye, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
+  Eye,
+  ChevronLeft,
+  ChevronRight,
+  BotMessageSquare,
+  Trash2,
+} from "lucide-react";
 
 const ResponsesTab = () => {
+  //STATES
   const [responses, setResponses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
   const [selectedResponse, setSelectedResponse] = useState(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
+  //TOAST
+  const { toast } = useToast();
+
+  //FETCH RESPONSES
   const fetchResponses = async (page = 1) => {
     try {
       setLoading(true);
@@ -42,10 +66,12 @@ const ResponsesTab = () => {
     }
   };
 
+  //HOOKS
   useEffect(() => {
     fetchResponses();
   }, []);
 
+  //FUNCTIONS
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
@@ -61,6 +87,30 @@ const ResponsesTab = () => {
       hour: "2-digit",
       minute: "2-digit",
     });
+  };
+
+  const handleDeleteResponse = async () => {
+    console.log("response to delete", selectedResponse._id);
+    if (!selectedResponse) return;
+    try {
+      const response = await yearbookService.deleteResponse(
+        selectedResponse._id
+      );
+      fetchResponses(currentPage);
+      setDialogOpen(false);
+      setSelectedResponse(null);
+
+      toast({
+        title: "All good 👊",
+        message: "La soumission a été supprimée avec succès",
+      });
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Oups, we've got a problem",
+        message: "Impossible de supprimer cette soumission",
+      });
+    }
   };
 
   if (loading) {
@@ -115,7 +165,10 @@ const ResponsesTab = () => {
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => setSelectedResponse(response)}
+                              onClick={() => {
+                                setSelectedResponse(response);
+                                setDialogOpen(true);
+                              }}
                             >
                               <Eye className="w-4 h-4 mr-2" />
                               Voir
@@ -172,6 +225,36 @@ const ResponsesTab = () => {
                                     <strong>Code:</strong>{" "}
                                     {selectedResponse.code}
                                   </div>
+                                </div>
+                                <div className="flex justify-end">
+                                  <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                      <Button variant="destructive" size="icon">
+                                        <Trash2 />
+                                      </Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                      <AlertDialogHeader>
+                                        <AlertDialogTitle>
+                                          Are you absolutely sure?
+                                        </AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                          This action cannot be undone.
+                                        </AlertDialogDescription>
+                                      </AlertDialogHeader>
+                                      <AlertDialogFooter>
+                                        <AlertDialogCancel>
+                                          Cancel
+                                        </AlertDialogCancel>
+                                        <AlertDialogAction
+                                          className="bg-red-500"
+                                          onClick={() => handleDeleteResponse()}
+                                        >
+                                          Continue
+                                        </AlertDialogAction>
+                                      </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                  </AlertDialog>
                                 </div>
                               </div>
                             )}

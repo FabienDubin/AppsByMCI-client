@@ -51,6 +51,13 @@ class YearbookService {
     );
     return res.data;
   };
+
+  // ✅ DELETE /yearbook/:id
+  deleteResponse = async (id) => {
+    console.log("response to delete", id);
+    const res = await this.api.delete(`/yearbook/delete/${id}`);
+    return res.data;
+  };
 }
 
 // Création d'une instance unique du service

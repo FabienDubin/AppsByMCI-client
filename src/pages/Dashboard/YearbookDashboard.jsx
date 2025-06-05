@@ -4,17 +4,30 @@ import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 //MEDIAS
-import { BookOpen, Cog, MessageSquareReply } from "lucide-react";
+import {
+  BookOpen,
+  Cog,
+  MessageSquareReply,
+  SquareArrowOutUpRight,
+} from "lucide-react";
 import ConfigTab from "@/components/Yearbook/ConfigTab";
 import ResponsesTab from "@/components/Yearbook/ResponsesTab";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 const YearbookDashboard = () => {
+  const nav = useNavigate();
   return (
     <div className="w-full min-h-screen">
-      <h1 className="flex items-center text-2xl font-bold p-4 w-full">
-        <BookOpen className="mr-2" />
-        Yearbook
-      </h1>
+      <div className="flex justify-between items-center">
+        <h1 className="flex items-center text-2xl font-bold p-4 w-full">
+          <BookOpen className="mr-2" />
+          Yearbook
+        </h1>
+        <Button variant="ghost" onClick={() => nav("/yearbook")}>
+          Go to the app <SquareArrowOutUpRight />
+        </Button>
+      </div>
       <Tabs defaultValue="responses" className="w-full">
         <TabsList>
           <TabsTrigger value="responses">

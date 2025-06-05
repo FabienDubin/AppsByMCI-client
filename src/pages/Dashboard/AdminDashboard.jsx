@@ -97,11 +97,12 @@ const AdminDashboard = () => {
       >
         Welcome to your admin dashboard!
       </h2>
-      <p className="px-4 mt-6 text-gray-600 font-light">
+      <p className="mt-4">👈 Choose an app on the sidebar</p>
+      {/* <p className="px-4 mt-6 text-gray-600 font-light">
         This is an example of dataviz you can display on that page
-      </p>
+      </p> */}
 
-      <div className="p-4 w-full flex items-stretch justify-between gap-4">
+      {/* <div className="p-4 w-full flex items-stretch justify-between gap-4">
         <ChartTemplate
           chartData={chartData}
           chartConfig={chartConfig}
@@ -117,7 +118,7 @@ const AdminDashboard = () => {
           chartConfig={barConfig}
           className="flex-1"
         />
-      </div>
+      </div> */}
     </div>
   );
 };
