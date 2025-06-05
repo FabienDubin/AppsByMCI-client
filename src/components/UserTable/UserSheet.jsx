@@ -57,7 +57,7 @@ const UserSheet = ({ user, onSave }) => {
       console.log(error);
       toast({
         title: "Oups, we've got a problem",
-        message: "",
+        description: "",
       });
     }
   };

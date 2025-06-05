@@ -90,7 +90,6 @@ const ResponsesTab = () => {
   };
 
   const handleDeleteResponse = async () => {
-    console.log("response to delete", selectedResponse._id);
     if (!selectedResponse) return;
     try {
       const response = await yearbookService.deleteResponse(
@@ -102,13 +101,13 @@ const ResponsesTab = () => {
 
       toast({
         title: "All good 👊",
-        message: "La soumission a été supprimée avec succès",
+        description: "La réponse a été supprimée avec succès",
       });
     } catch (error) {
       console.error(error);
       toast({
         title: "Oups, we've got a problem",
-        message: "Impossible de supprimer cette soumission",
+        description: "Impossible de supprimer cette soumission",
       });
     }
   };

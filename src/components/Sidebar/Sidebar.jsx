@@ -35,7 +35,7 @@ const items = [
   { title: "Users", url: "/dashboard/users", icon: SquareUserRound },
   { title: "Mercedes", url: "/dashboard/mercedes", icon: CarFront },
   { title: "Yearbook", url: "/dashboard/yearbook", icon: BookOpen },
-  { title: "Setting", url: "/dashboard/settings", icon: Settings2 },
+  // { title: "Setting", url: "/dashboard/settings", icon: Settings2 },
 ];
 
 export function AppSidebar() {

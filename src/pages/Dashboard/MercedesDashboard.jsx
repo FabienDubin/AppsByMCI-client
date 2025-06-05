@@ -14,8 +14,6 @@ import ConfigTab from "@/components/CLA/ConfigTab";
 import ResponsesTab from "@/components/CLA/ResponsesTab";
 import { useNavigate } from "react-router-dom";
 const MercedesDashboard = () => {
-  const nav = useNavigate();
-
   return (
     <div className="w-full min-h-screen">
       <div className="flex justify-between items-center">
@@ -23,7 +21,10 @@ const MercedesDashboard = () => {
           <CarFront className="mr-2" />
           Mercedes CLA
         </h1>
-        <Button variant="ghost" onClick={() => nav("/mercedesCLA")}>
+        <Button
+          variant="ghost"
+          onClick={() => window.open("/mercedesCLA", "_blank  ")}
+        >
           Go to the app <SquareArrowOutUpRight />
         </Button>
       </div>

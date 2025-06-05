@@ -366,6 +366,18 @@ const Yearbook = () => {
                 <Button variant="ghost" onClick={handleBack}>
                   ← Revenir
                 </Button>
+                <p className="text-sm text-gray-500 mt-4">
+                  En soumettant votre photo, vous acceptez qu'elle soit traitée
+                  par une intelligence artificielle hébergée par un service
+                  tiers.{" "}
+                  <a
+                    className="underline text-blue-500 hover:text-blue-700 italic"
+                    href="https://openai.com/enterprise-privacy/"
+                    target="_blank"
+                  >
+                    En savoir plus
+                  </a>
+                </p>
               </CardContent>
             </Card>
           )}

@@ -24,7 +24,10 @@ const YearbookDashboard = () => {
           <BookOpen className="mr-2" />
           Yearbook
         </h1>
-        <Button variant="ghost" onClick={() => nav("/yearbook")}>
+        <Button
+          variant="ghost"
+          onClick={() => window.open("/yearbook", "_blank")}
+        >
           Go to the app <SquareArrowOutUpRight />
         </Button>
       </div>

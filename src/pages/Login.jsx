@@ -72,9 +72,15 @@ const Login = () => {
       <div className="flex flex-col justify-center items-center md:block md:relative ">
         <Link
           to="/"
-          className="hidden md:w-2/3 h-lvh  absolute  left-0 z-[-1] md:flex flex-col items-center justify-center"
+          className="hidden md:w-2/3 h-lvh  absolute  left-0 z-[-1] md:flex flex-col  justify-center"
         >
-          <Logo />
+          <div className="flex flex-col justify-start ml-6">
+            <div className="w-1/5">
+              <Logo />
+            </div>
+            <h1 className="text-[250px] font-bold">Apps</h1>
+            <h1 className="text-[200px] font-bold">By MCI</h1>
+          </div>
         </Link>
         <Card className="w-full md:w-1/2 xl:w-1/3 h-lvh md:absolute md:right-0 flex flex-col justify-center items-center">
           <Link to="/" className=" md:hidden ">
