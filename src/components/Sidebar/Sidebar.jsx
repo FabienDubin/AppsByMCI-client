@@ -24,6 +24,7 @@ import {
   Settings2,
   CarFront,
   BookOpen,
+  Compass,
 } from "lucide-react";
 
 import Logo from "../Logo";
@@ -35,6 +36,7 @@ const items = [
   { title: "Users", url: "/dashboard/users", icon: SquareUserRound },
   { title: "Mercedes", url: "/dashboard/mercedes", icon: CarFront },
   { title: "Yearbook", url: "/dashboard/yearbook", icon: BookOpen },
+  { title: "Adventurer", url: "/dashboard/adventurer", icon: Compass },
   // { title: "Setting", url: "/dashboard/settings", icon: Settings2 },
 ];
 

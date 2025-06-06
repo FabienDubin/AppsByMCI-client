@@ -26,6 +26,9 @@ const Home = () => {
           <Button className="m-4" onClick={() => nav("/yearbook")}>
             Yearbook
           </Button>
+          <Button className="m-4" onClick={() => nav("/adventurer")}>
+            L'aventurier
+          </Button>
         </div>
       )}
     </div>

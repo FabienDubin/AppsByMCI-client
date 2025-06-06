@@ -31,12 +31,20 @@ import MercedesCLA from "./pages/MercedesCLA";
 import MercedesDashboard from "./pages/Dashboard/MercedesDashboard";
 import Yearbook from "./pages/Yearbook";
 import YearbookDashboard from "./pages/Dashboard/YearbookDashboard";
+import AdventurerProfile from "./pages/AdventurerProfile";
+import AdventurerDashboard from "./pages/Dashboard/AdventurerDashboard";
 
 function App() {
   //LOCATION
   const location = useLocation();
   //remove the navbar on the signup the login a,d the dashboard page
-  const noNavbarRoutes = ["/login", "/signup", "/mercedesCLA", "/yearbook"];
+  const noNavbarRoutes = [
+    "/login",
+    "/signup",
+    "/mercedesCLA",
+    "/yearbook",
+    "/adventurer",
+  ];
   const hideNavbar =
     noNavbarRoutes.includes(location.pathname) ||
     location.pathname.startsWith("/dashboard") ||
@@ -96,6 +104,10 @@ function App() {
                           element={<YearbookDashboard />}
                         />
                         <Route
+                          path="adventurer"
+                          element={<AdventurerDashboard />}
+                        />
+                        <Route
                           path="settings"
                           element={<SettingsDashboard />}
                         />
@@ -119,6 +131,9 @@ function App() {
 
             {/* Page to yearbook app */}
             <Route path="/yearbook" element={<Yearbook />} />
+
+            {/* Page to adventurer profile app */}
+            <Route path="/adventurer" element={<AdventurerProfile />} />
 
             <Route path="/not-authorized" element={<NotAuthorized />} />
             <Route path="*" element={<NotFound />} />
