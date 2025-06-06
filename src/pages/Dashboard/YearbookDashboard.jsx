@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Helmet } from "react-helmet";
 //COMPONENTS
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -19,6 +19,13 @@ const YearbookDashboard = () => {
   const nav = useNavigate();
   return (
     <div className="w-full min-h-screen">
+      <Helmet>
+        <title>Dashboard - Yearbook</title>
+        <meta
+          name="description"
+          content="Consultez les soumissions du yearbook."
+        />
+      </Helmet>
       <div className="flex justify-between items-center">
         <h1 className="flex items-center text-2xl font-bold p-4 w-full">
           <BookOpen className="mr-2" />

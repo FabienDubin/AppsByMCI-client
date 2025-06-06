@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Helmet } from "react-helmet";
 //COMPONENTS
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,13 @@ import { useNavigate } from "react-router-dom";
 const MercedesDashboard = () => {
   return (
     <div className="w-full min-h-screen">
+      <Helmet>
+        <title>Dashboard - Avatar Mercedes</title>
+        <meta
+          name="description"
+          content="Consultez les soumissions des avatars Mercedes."
+        />
+      </Helmet>
       <div className="flex justify-between items-center">
         <h1 className="flex items-center text-2xl font-bold p-4 w-full">
           <CarFront className="mr-2" />

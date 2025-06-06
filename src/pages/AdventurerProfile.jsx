@@ -16,6 +16,7 @@ import {
 
 //THEME
 import { useTheme } from "@/components/ThemeProvider";
+import { Helmet } from "react-helmet";
 
 //Messages array to be displayed while generating the avatar
 const messages = [
@@ -237,6 +238,13 @@ const AdventurerProfile = () => {
 
   return (
     <div className=" from-green-900 via-emerald-800 to-teal-900 bg-[url(https://storagemercedescla01.blob.core.windows.net/background/adventurerBG.png)] bg-cover bg-center min-h-screen">
+      <Helmet>
+        <title>AppsByMCI - Profil Aventurier</title>
+        <meta
+          name="description"
+          content="Découvrez quel aventurier vous êtes."
+        />
+      </Helmet>
       <div className="relative z-10 max-w-xl mx-auto px-4 py-8 space-y-6">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mb-4">
