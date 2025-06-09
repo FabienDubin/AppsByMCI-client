@@ -327,7 +327,7 @@ const AdventurerProfile = () => {
                 <Button
                   key={opt.value}
                   onClick={() => handleAnswer(opt.value)}
-                  className="w-full text-left justify-start"
+                  className="w-full text-left justify-start whitespace-normal min-h-[3.5rem]"
                   variant="outline"
                 >
                   {opt.label}
