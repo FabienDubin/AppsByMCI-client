@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 export function BackgroundPath({ user }) {
   const paths = Array.from({ length: 36 }, (_, i) => ({
@@ -15,6 +16,7 @@ export function BackgroundPath({ user }) {
     width: 0.5 + i * 0.03,
   }));
   // console.log(user);
+  const nav = useNavigate();
 
   return (
     <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-white dark:bg-neutral-950">
