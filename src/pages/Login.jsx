@@ -17,6 +17,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { BackgroundPath } from "@/components/BackgroundPath";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const Login = () => {
@@ -75,11 +76,7 @@ const Login = () => {
           className="hidden md:w-2/3 h-lvh  absolute  left-0 z-[-1] md:flex flex-col  justify-center"
         >
           <div className="flex flex-col justify-start ml-6">
-            <div className="w-1/5">
-              <Logo />
-            </div>
-            <h1 className="text-[250px] font-bold">Apps</h1>
-            <h1 className="text-[200px] font-bold">By MCI</h1>
+            <BackgroundPath title="Welcome to AppsByMCI" user={user} />
           </div>
         </Link>
         <Card className="w-full md:w-1/2 xl:w-1/3 h-lvh md:absolute md:right-0 flex flex-col justify-center items-center">
@@ -116,13 +113,13 @@ const Login = () => {
                   required
                 />
               </div>
-
+              {/* Redirect to signup page
               <p className="text-sm">
                 Don't have an account yet? Go to the{" "}
                 <a href="/signup" className=" hover:text-gray-700 underline">
                   signup page!
                 </a>
-              </p>
+              </p> */}
               <Button className="mt-4 w-full">
                 <LogIn />
                 Login

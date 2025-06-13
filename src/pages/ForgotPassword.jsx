@@ -2,7 +2,7 @@
 import { useState } from "react";
 import authService from "@/services/auth.service";
 import { Link } from "react-router-dom";
-
+import { BackgroundPath } from "@/components/BackgroundPath";
 //MEDIAS
 import Logo from "@/components/Logo";
 import { Send } from "lucide-react";
@@ -47,7 +47,7 @@ const ForgotPassword = () => {
             to="/"
             className="hidden md:w-2/3 h-lvh  absolute  left-0 z-[-1] md:flex flex-col items-center justify-center"
           >
-            <Logo />
+            <BackgroundPath title="Welcome to AppsByMCI" user={null} />
           </Link>
           <Card className="w-full md:w-1/2 xl:w-1/3 h-lvh md:absolute md:right-0 flex flex-col justify-center items-center">
             <Link to="/" className=" md:hidden ">
