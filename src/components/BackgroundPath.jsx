@@ -123,7 +123,7 @@ export function BackgroundPath({ user }) {
                   L'aventurier
                 </Button>
                 <Button className="m-4" onClick={() => nav("/astronaut")}>
-                  L'aventurier
+                  L'astronaute
                 </Button>
               </div>
             )}
