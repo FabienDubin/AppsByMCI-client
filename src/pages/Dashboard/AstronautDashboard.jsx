@@ -5,32 +5,32 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 //MEDIAS
 import {
-  CarFront,
+  Rocket,
   Cog,
   MessageSquareReply,
   SquareArrowOutUpRight,
 } from "lucide-react";
-import ConfigTab from "@/components/CLA/ConfigTab";
-import ResponsesTab from "@/components/CLA/ResponsesTab";
-import { useNavigate } from "react-router-dom";
-const MercedesDashboard = () => {
+import ConfigTab from "@/components/Astronaut/ConfigTab";
+import ResponsesTab from "@/components/Astronaut/ResponsesTab";
+
+const AstronautDashboard = () => {
   return (
     <div className="w-full min-h-screen">
       <Helmet>
-        <title>Dashboard - Avatar Mercedes</title>
+        <title>Dashboard - Profil d'Astronaute</title>
         <meta
           name="description"
-          content="Consultez les soumissions des avatars Mercedes."
+          content="Consultez les soumissions des profils d'astronaute."
         />
       </Helmet>
       <div className="flex justify-between items-center">
         <h1 className="flex items-center text-2xl font-bold p-4 w-full">
-          <CarFront className="mr-2" />
-          Mercedes CLA
+          <Rocket className="mr-2" />
+          Profil d'Astronaute
         </h1>
         <Button
           variant="ghost"
-          onClick={() => window.open("/mercedesCLA", "_blank  ")}
+          onClick={() => window.open("/astronaut", "_blank")}
         >
           Go to the app <SquareArrowOutUpRight />
         </Button>
@@ -39,10 +39,10 @@ const MercedesDashboard = () => {
       <Tabs defaultValue="responses" className="w-full">
         <TabsList>
           <TabsTrigger value="responses">
-            <MessageSquareReply className="mr-2" /> Réponses
+            <MessageSquareReply className="mr-2" /> Soumissions
           </TabsTrigger>
           <TabsTrigger value="config">
-            <Cog className="mr-2" /> Config
+            <Cog className="mr-2" /> Configuration
           </TabsTrigger>
         </TabsList>
         <TabsContent value="responses">
@@ -56,4 +56,4 @@ const MercedesDashboard = () => {
   );
 };
 
-export default MercedesDashboard;
+export default AstronautDashboard;

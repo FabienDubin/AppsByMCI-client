@@ -33,6 +33,8 @@ import Yearbook from "./pages/Yearbook";
 import YearbookDashboard from "./pages/Dashboard/YearbookDashboard";
 import AdventurerProfile from "./pages/AdventurerProfile";
 import AdventurerDashboard from "./pages/Dashboard/AdventurerDashboard";
+import AstronautProfile from "./pages/AstronautProfile";
+import AstronautDashboard from "./pages/Dashboard/AstronautDashboard";
 
 function App() {
   //LOCATION
@@ -44,6 +46,7 @@ function App() {
     "/mercedesCLA",
     "/yearbook",
     "/adventurer",
+    "/astronaut",
   ];
   const hideNavbar =
     noNavbarRoutes.includes(location.pathname) ||
@@ -108,6 +111,10 @@ function App() {
                           element={<AdventurerDashboard />}
                         />
                         <Route
+                          path="astronaut"
+                          element={<AstronautDashboard />}
+                        />
+                        <Route
                           path="settings"
                           element={<SettingsDashboard />}
                         />
@@ -134,6 +141,9 @@ function App() {
 
             {/* Page to adventurer profile app */}
             <Route path="/adventurer" element={<AdventurerProfile />} />
+
+            {/* Page to astronaut profile app */}
+            <Route path="/astronaut" element={<AstronautProfile />} />
 
             <Route path="/not-authorized" element={<NotAuthorized />} />
             <Route path="*" element={<NotFound />} />

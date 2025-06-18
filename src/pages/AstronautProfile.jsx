@@ -1,18 +1,11 @@
 import { useEffect, useState, useRef } from "react";
-import adventurerService from "@/services/adventurer.service";
+import astronautService from "@/services/astronaut.service";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import {
-  Loader2,
-  Camera,
-  Upload,
-  Download,
-  Compass,
-  Siren,
-} from "lucide-react";
+import { Loader2, Camera, Upload, Download, Rocket, Siren } from "lucide-react";
 
 //THEME
 import { useTheme } from "@/components/ThemeProvider";
@@ -20,31 +13,31 @@ import { Helmet } from "react-helmet-async";
 
 //Messages array to be displayed while generating the avatar
 const messages = [
-  "Exploration de votre profil d'aventurier...",
-  "Analyse de votre esprit d'aventure...",
-  "Préparation de l'équipement d'exploration...",
-  "Cartographie de votre personnalité...",
-  "Création de votre avatar d'aventurier...",
-  "Chargement des terres inexplorées...",
-  "Ajustement de votre boussole intérieure 🧭...",
-  "Préparation du sac à dos d'aventure 🎒...",
-  "Analyse des sentiers de montagne 🏔️...",
-  "Fusion avec l'esprit de la nature 🌲...",
-  "Calibrage de votre sens de l'orientation...",
-  "Inscription dans le livre des explorateurs 📖...",
-  "Lecture des carnets de voyage de Marco Polo...",
-  "Chargement du journal de bord du Capitaine Nemo ⚓...",
-  "Analyse des archives de Lara Croft 🗺️...",
-  "Connexion à l'esprit d'Indiana Jones 🏺...",
-  "Réveil de l'instinct de survie façon Bear Grylls...",
-  "Exploration des étoiles avec l'équipage de Starfleet 🚀...",
-  "Alignement sur la sagesse de Sir Ernest Shackleton...",
-  "Chargement des récits de Phileas Fogg autour du monde 🌍...",
-  "Synchronisation avec l'audace d'Amelia Earhart ✈️...",
-  "Préparation du packatage de Dora 🎒...",
+  "Exploration de votre profil d'astronaute...",
+  "Analyse de votre esprit spatial...",
+  "Préparation de l'équipement spatial...",
+  "Cartographie de votre personnalité cosmique...",
+  "Création de votre avatar d'astronaute...",
+  "Chargement des coordonnées galactiques...",
+  "Ajustement de votre navigation stellaire 🚀...",
+  "Préparation de la combinaison spatiale 👨‍🚀...",
+  "Analyse des trajectoires orbitales 🛰️...",
+  "Fusion avec l'esprit de l'espace 🌌...",
+  "Calibrage de votre système de navigation...",
+  "Inscription dans le registre des astronautes 📋...",
+  "Lecture des journaux de bord de Neil Armstrong...",
+  "Chargement des données de la Station Spatiale Internationale 🛸...",
+  "Analyse des archives de la NASA 🌍...",
+  "Connexion à l'esprit de Yuri Gagarin 🚀...",
+  "Réveil de l'instinct d'exploration spatiale...",
+  "Exploration des galaxies lointaines avec Hubble 🔭...",
+  "Alignement sur la sagesse de Mae Jemison...",
+  "Chargement des cartes stellaires de l'univers 🌟...",
+  "Synchronisation avec l'audace de Valentina Tereshkova 👩‍🚀...",
+  "Préparation du module de commande spatial 🛰️...",
 ];
 
-const AdventurerProfile = () => {
+const AstronautProfile = () => {
   //STATES
   const [step, setStep] = useState(0);
   const [user, setUser] = useState({ name: "", gender: "Homme", code: "" });
@@ -77,7 +70,7 @@ const AdventurerProfile = () => {
   useEffect(() => {
     const fetchConfig = async () => {
       try {
-        const data = await adventurerService.getConfig();
+        const data = await astronautService.getConfig();
         setQuestions(data.questions);
       } catch (error) {
         console.error("Erreur lors du chargement de la config:", error);
@@ -201,7 +194,7 @@ const AdventurerProfile = () => {
       formData.append("code", user.code);
       formData.append("answers", JSON.stringify(answers));
 
-      const res = await adventurerService.submitResponse(formData);
+      const res = await astronautService.submitResponse(formData);
       setOriginalImageUrl(res.originalImageUrl);
       setGeneratedImageUrl(res.generatedImageUrl);
       setStep(10);
@@ -237,24 +230,24 @@ const AdventurerProfile = () => {
   }, []);
 
   return (
-    <div className=" from-green-900 via-emerald-800 to-teal-900 bg-[url(https://storagemercedescla01.blob.core.windows.net/background/adventurerBG.png)] bg-cover bg-center min-h-screen">
+    <div className="from-blue-900 via-indigo-900 to-black bg-[url(https://images.unsplash.com/photo-1446776877081-d282a0f896e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80)] bg-cover bg-center min-h-screen">
       <Helmet>
-        <title>AppsByMCI - Profil Aventurier</title>
+        <title>AppsByMCI - Profil Astronaute</title>
         <meta
           name="description"
-          content="Découvrez quel aventurier vous êtes."
+          content="Découvrez quel astronaute vous êtes."
         />
       </Helmet>
       <div className="relative z-10 max-w-xl mx-auto px-4 py-8 space-y-6">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mb-4">
-            <Compass className="w-12 h-12 text-amber-400 mr-3" />
+            <Rocket className="w-12 h-12 text-blue-400 mr-3" />
             <h1 className="text-4xl font-bold text-white">
-              Profil d'Aventurier
+              Profil d'Astronaute
             </h1>
           </div>
           <p className="text-gray-300">
-            Découvrez votre avatar d'explorateur personnalisé
+            Découvrez votre avatar d'explorateur spatial personnalisé
           </p>
         </div>
 
@@ -277,13 +270,13 @@ const AdventurerProfile = () => {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center">
-                <Compass className="w-5 h-5 mr-2" />
-                Qui êtes-vous, aventurier ?
+                <Rocket className="w-5 h-5 mr-2" />
+                Qui êtes-vous, astronaute ?
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <Input
-                placeholder="Votre prénom d'aventurier"
+                placeholder="Votre nom d'astronaute"
                 value={user.name}
                 onChange={(e) => setUser({ ...user, name: e.target.value })}
               />
@@ -299,7 +292,7 @@ const AdventurerProfile = () => {
                 ))}
               </div>
               <Input
-                placeholder="Code d'accès à l'expédition"
+                placeholder="Code d'accès à la mission spatiale"
                 value={user.code}
                 onChange={(e) => setUser({ ...user, code: e.target.value })}
               />
@@ -308,7 +301,7 @@ const AdventurerProfile = () => {
                 onClick={() => setStep(1)}
                 disabled={!user.name || !user.code}
               >
-                Commencer l'aventure
+                Commencer la mission
               </Button>
             </CardContent>
           </Card>
@@ -354,7 +347,7 @@ const AdventurerProfile = () => {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <Camera className="w-5 h-5 mr-2" />
-                Ajoutez votre photo d'aventurier
+                Ajoutez votre photo d'astronaute
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -363,7 +356,7 @@ const AdventurerProfile = () => {
                 onClick={() => setStep(7)}
               >
                 <Camera className="w-4 h-4" />
-                Prendre un selfie
+                Prendre un selfie spatial
               </Button>
               <Button
                 variant="outline"
@@ -386,7 +379,7 @@ const AdventurerProfile = () => {
         {step === 7 && (
           <Card>
             <CardHeader>
-              <CardTitle>Prenez votre photo d'aventurier</CardTitle>
+              <CardTitle>Prenez votre photo d'astronaute</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="relative">
@@ -429,7 +422,7 @@ const AdventurerProfile = () => {
         {step === 8 && (
           <Card>
             <CardHeader>
-              <CardTitle>Confirmez votre photo d'aventurier</CardTitle>
+              <CardTitle>Confirmez votre photo d'astronaute</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {imagePreview && (
@@ -448,7 +441,7 @@ const AdventurerProfile = () => {
                   disabled={!selectedImage}
                   className="flex-1"
                 >
-                  Générer mon avatar d'aventurier
+                  Générer mon avatar d'astronaute
                 </Button>
               </div>
 
@@ -459,7 +452,7 @@ const AdventurerProfile = () => {
                 En soumettant votre photo, vous acceptez qu'elle soit traitée
                 par une intelligence artificielle hébergée par un service tiers.{" "}
                 <a
-                  className="underline text-amber-400 hover:text-amber-300 italic"
+                  className="underline text-blue-400 hover:text-blue-300 italic"
                   href="https://openai.com/enterprise-privacy/"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -474,7 +467,7 @@ const AdventurerProfile = () => {
         {/* Step 9: Loading */}
         {step === 9 && (
           <div className="text-center space-y-6 py-12">
-            <Loader2 className="mx-auto animate-spin h-20 w-20 text-amber-400" />
+            <Loader2 className="mx-auto animate-spin h-20 w-20 text-blue-400" />
             <p className="text-lg text-white">{randomMessage}</p>
             <p className="text-gray-300">Génération en cours...</p>
           </div>
@@ -486,18 +479,18 @@ const AdventurerProfile = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="text-center flex items-center justify-center">
-                  <Compass className="w-6 h-6 mr-2" />
-                  Votre avatar d'aventurier
+                  <Rocket className="w-6 h-6 mr-2" />
+                  Votre avatar d'astronaute
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="text-center">
                   <p className="text-sm text-muted-foreground mb-2">
-                    Votre profil d'explorateur
+                    Votre profil d'explorateur spatial
                   </p>
                   <img
                     src={generatedImageUrl}
-                    alt="Avatar d'aventurier"
+                    alt="Avatar d'astronaute"
                     className="rounded-lg shadow-md w-full"
                   />
                 </div>
@@ -521,7 +514,7 @@ const AdventurerProfile = () => {
                     className="flex-1"
                     onClick={restart}
                   >
-                    Nouvelle aventure
+                    Nouvelle mission
                   </Button>
                 </div>
               </CardContent>
@@ -542,4 +535,4 @@ const AdventurerProfile = () => {
   );
 };
 
-export default AdventurerProfile;
+export default AstronautProfile;
