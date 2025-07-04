@@ -26,6 +26,7 @@ import {
   BookOpen,
   Compass,
   Rocket,
+  PartyPopper,
 } from "lucide-react";
 
 import Logo from "../Logo";
@@ -39,6 +40,7 @@ const items = [
   { title: "Yearbook", url: "/dashboard/yearbook", icon: BookOpen },
   { title: "Adventurer", url: "/dashboard/adventurer", icon: Compass },
   { title: "Astronaut", url: "/dashboard/astronaut", icon: Rocket },
+  { title: "Event Manager", url: "/dashboard/eventmanager", icon: PartyPopper },
   // { title: "Setting", url: "/dashboard/settings", icon: Settings2 },
 ];
 

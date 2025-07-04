@@ -1,44 +1,44 @@
 import { useEffect, useState, useRef } from "react";
-import astronautService from "@/services/astronaut.service";
+import eventManagerService from "@/services/eventmanager.service";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Loader2, Camera, Upload, Download, Rocket, Siren } from "lucide-react";
+import { Slider } from "@/components/ui/slider";
+import {
+  Loader2,
+  Camera,
+  Upload,
+  Download,
+  PartyPopper,
+  Siren,
+} from "lucide-react";
 
-//THEME
+// THEME
 import { useTheme } from "@/components/ThemeProvider";
 import { Helmet } from "react-helmet-async";
 
-//Messages array to be displayed while generating the avatar
+// Messages displayed while generating avatar
 const messages = [
-  "Exploration de votre profil d'astronaute...",
-  "Analyse de votre esprit spatial...",
-  "Préparation de l'équipement spatial...",
-  "Cartographie de votre personnalité cosmique...",
-  "Création de votre avatar d'astronaute...",
-  "Chargement des coordonnées galactiques...",
-  "Ajustement de votre navigation stellaire 🚀...",
-  "Préparation de la combinaison spatiale 👨‍🚀...",
-  "Analyse des trajectoires orbitales 🛰️...",
-  "Fusion avec l'esprit de l'espace 🌌...",
-  "Calibrage de votre système de navigation...",
-  "Inscription dans le registre des astronautes 📋...",
-  "Lecture des journaux de bord de Neil Armstrong...",
-  "Chargement des données de la Station Spatiale Internationale 🛸...",
-  "Analyse des archives de la NASA 🌍...",
-  "Connexion à l'esprit de Yuri Gagarin 🚀...",
-  "Réveil de l'instinct d'exploration spatiale...",
-  "Exploration des galaxies lointaines avec Hubble 🔭...",
-  "Alignement sur la sagesse de Katy Perry...",
-  "Chargement des cartes stellaires de l'univers 🌟...",
-  "Synchronisation avec l'audace de Valentina Tereshkova 👩‍🚀...",
-  "Préparation du module de commande spatial 🛰️...",
+  "Préparation de votre événement grandiose...",
+  "Réservation des lieux prestigieux...",
+  "Connexion au cerveau d'Arnaud Chouraki",
+  "Connexion à l'historique Sharepoint 😵",
+  "Commande Haribo en cours",
+  "Relecture du roadbook",
+  "Synchronisation des talkies-walkies...",
+  "Briefing des équipes logistiques...",
+  "Création de votre avatar de chef·fe de projet...",
+  "Calibration des lumières et du son...",
+  "Mise en place du traiteur gastronomique...",
+  "Vérification du plan des salles...",
+  "Réglage des micros et projecteurs...",
+  "Finalisation du planning minute par minute...",
 ];
 
-const AstronautProfile = () => {
-  //STATES
+const EventManagerProfile = () => {
+  // STATES
   const [step, setStep] = useState(0);
   const [user, setUser] = useState({ name: "", gender: "Homme", code: "" });
   const [questions, setQuestions] = useState([]);
@@ -51,79 +51,76 @@ const AstronautProfile = () => {
   const [randomMessage, setRandomMessage] = useState("");
   const [alertMessage, setAlertMessage] = useState(null);
 
-  // Refs for camera functionality
+  // Slider temp value
+  const [sliderValue, setSliderValue] = useState(2);
+
+  // Refs for camera
   const fileInputRef = useRef(null);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [isCameraActive, setIsCameraActive] = useState(false);
 
-  // Set the dark theme by default for this page
+  // Theme
   const { setTheme } = useTheme();
   useEffect(() => {
     setTheme("dark");
   }, []);
 
-  //PROGRESS BAR OF THE QUIZ
-  const progress = (step / 9) * 100; // 0 à 8 = étapes, 9 = loading, 10 = result
+  // Progress
+  const progress = (step / 9) * 100;
 
-  //HOOKS
+  // Fetch config
   useEffect(() => {
     const fetchConfig = async () => {
       try {
-        const data = await astronautService.getConfig();
+        const data = await eventManagerService.getConfig();
         setQuestions(data.questions);
-      } catch (error) {
-        console.error("Erreur lors du chargement de la config:", error);
+      } catch (e) {
+        console.error("Erreur chargement config:", e);
       }
     };
     fetchConfig();
   }, []);
 
+  // Random message while loading
   useEffect(() => {
     if (loading) {
-      const interval = setInterval(() => {
-        const random = messages[Math.floor(Math.random() * messages.length)];
-        setRandomMessage(random);
+      const int = setInterval(() => {
+        const msg = messages[Math.floor(Math.random() * messages.length)];
+        setRandomMessage(msg);
       }, 2000);
-      return () => clearInterval(interval);
+      return () => clearInterval(int);
     }
   }, [loading]);
 
-  //FUNCTIONS
-  //Handles the answer of the user
+  // FUNCTIONS
   const handleAnswer = (value) => {
     const newAnswers = [...answers];
     newAnswers[step - 1] = value;
     setAnswers(newAnswers);
-    if (step < 5) {
-      setStep((s) => s + 1);
-    }
+    setSliderValue(2);
+    if (step < 5) setStep((s) => s + 1);
   };
 
-  //Handles the back button
   const handleBack = () => {
     if (step === 0) return;
-    if (step === 7 && isCameraActive) {
-      stopCamera();
-    }
+    if (step === 7 && isCameraActive) stopCamera();
     setStep((s) => s - 1);
   };
 
-  // Handle file selection
-  const handleFileSelect = (event) => {
-    const file = event.target.files[0];
+  // File select
+  const handleFileSelect = (e) => {
+    const file = e.target.files[0];
     if (file) {
       setSelectedImage(file);
       const reader = new FileReader();
-      reader.onload = (e) => {
-        setImagePreview(e.target.result);
-      };
+      reader.onload = (ev) => setImagePreview(ev.target.result);
       reader.readAsDataURL(file);
-      setStep(8); // Go to preview step
+      setStep(8);
     }
   };
 
-  // Start camera
+  // Camera
   const startCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -133,40 +130,33 @@ const AstronautProfile = () => {
         videoRef.current.srcObject = stream;
         setIsCameraActive(true);
       }
-    } catch (error) {
-      console.error("Erreur d'accès à la caméra:", error);
+    } catch (e) {
+      console.error(e);
       alert("Impossible d'accéder à la caméra");
     }
   };
-
-  // Stop camera
   const stopCamera = () => {
-    if (videoRef.current && videoRef.current.srcObject) {
-      const tracks = videoRef.current.srcObject.getTracks();
-      tracks.forEach((track) => track.stop());
+    if (videoRef.current?.srcObject) {
+      videoRef.current.srcObject.getTracks().forEach((t) => t.stop());
       videoRef.current.srcObject = null;
-      setIsCameraActive(false);
     }
+    setIsCameraActive(false);
   };
-
-  // Take photo
   const takePhoto = () => {
     if (videoRef.current && canvasRef.current) {
       const canvas = canvasRef.current;
       const video = videoRef.current;
-      const context = canvas.getContext("2d");
-
+      const ctx = canvas.getContext("2d");
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
-      context.drawImage(video, 0, 0);
-
+      ctx.drawImage(video, 0, 0);
       canvas.toBlob(
         (blob) => {
           const file = new File([blob], "selfie.jpg", { type: "image/jpeg" });
           setSelectedImage(file);
           setImagePreview(canvas.toDataURL());
           stopCamera();
-          setStep(8); // Go to preview step
+          setStep(8);
         },
         "image/jpeg",
         0.8
@@ -174,18 +164,14 @@ const AstronautProfile = () => {
     }
   };
 
-  //Handles the generate button
+  // Generate avatar
   const handleGenerate = async () => {
     if (!selectedImage || !user.name || !user.code || answers.length !== 5) {
-      alert(
-        "Veuillez remplir tous les champs, répondre aux questions et sélectionner une image"
-      );
+      alert("Veuillez compléter toutes les étapes avant de générer.");
       return;
     }
-
     setLoading(true);
     setStep(9);
-
     try {
       const formData = new FormData();
       formData.append("image", selectedImage);
@@ -193,8 +179,7 @@ const AstronautProfile = () => {
       formData.append("gender", user.gender);
       formData.append("code", user.code);
       formData.append("answers", JSON.stringify(answers));
-
-      const res = await astronautService.submitResponse(formData);
+      const res = await eventManagerService.submitResponse(formData);
       setOriginalImageUrl(res.originalImageUrl);
       setGeneratedImageUrl(res.generatedImageUrl);
       setStep(10);
@@ -209,7 +194,6 @@ const AstronautProfile = () => {
     }
   };
 
-  //Handles the restart button
   const restart = () => {
     setUser({ name: "", gender: "Homme", code: "" });
     setAnswers([]);
@@ -222,32 +206,30 @@ const AstronautProfile = () => {
     setAlertMessage(null);
   };
 
-  // Cleanup camera on unmount
-  useEffect(() => {
-    return () => {
-      stopCamera();
-    };
-  }, []);
+  // Cleanup
+  useEffect(() => () => stopCamera(), []);
 
+  // RENDER
   return (
-    <div className="from-blue-900 via-indigo-900 to-black bg-[url(https://images.unsplash.com/photo-1446776877081-d282a0f896e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80)] bg-cover bg-center min-h-screen">
+    <div className="from-fuchsia-900 via-purple-900 to-black bg-[url(https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=2070&q=80)] bg-cover bg-center min-h-screen">
       <Helmet>
-        <title>AppsByMCI - Profil Astronaute</title>
+        <title>AppsByMCI - Profil Event Manager</title>
         <meta
           name="description"
-          content="Découvrez quel astronaute vous êtes."
+          content="Découvrez votre profil d'event manager"
         />
       </Helmet>
+
       <div className="relative z-10 max-w-xl mx-auto px-4 py-8 space-y-6">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mb-4">
-            <Rocket className="w-12 h-12" />
+            <PartyPopper className="w-12 h-12 text-pink-400 mr-3" />
             <h1 className="text-4xl font-bold text-white">
-              Profil d'Astronaute
+              Profil Event Manager
             </h1>
           </div>
           <p className="text-gray-300">
-            Découvrez votre avatar d'explorateur spatial personnalisé
+            Créez votre avatar de chef·fe de projet événementiel
           </p>
         </div>
 
@@ -265,18 +247,18 @@ const AstronautProfile = () => {
           </Alert>
         )}
 
-        {/* Step 0: User info */}
+        {/* Step 0 : infos user */}
         {step === 0 && (
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center">
-                <Rocket className="w-5 h-5 mr-2" />
-                Qui êtes-vous, astronaute ?
+                <PartyPopper className="w-5 h-5 mr-2" />
+                Qui êtes-vous ?
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <Input
-                placeholder="Votre nom d'astronaute"
+                placeholder="Votre prénom"
                 value={user.name}
                 onChange={(e) => setUser({ ...user, name: e.target.value })}
               />
@@ -292,7 +274,7 @@ const AstronautProfile = () => {
                 ))}
               </div>
               <Input
-                placeholder="Code d'accès à la mission spatiale"
+                placeholder="Code d'accès"
                 value={user.code}
                 onChange={(e) => setUser({ ...user, code: e.target.value })}
               />
@@ -301,37 +283,58 @@ const AstronautProfile = () => {
                 onClick={() => setStep(1)}
                 disabled={!user.name || !user.code}
               >
-                Commencer la mission
+                Démarrer
               </Button>
             </CardContent>
           </Card>
         )}
 
-        {/* Steps 1-5: Questions */}
+        {/* Steps 1-5 questions */}
         {step > 0 && step <= 5 && questions[step - 1] && (
           <Card>
             <CardHeader>
               <CardTitle>
-                Question {step}/5: {questions[step - 1].text}
+                Question {step}/5&nbsp;: {questions[step - 1].text}
               </CardTitle>
             </CardHeader>
-            <CardContent className="grid grid-cols-1 gap-3">
-              {questions[step - 1].options.map((opt) => (
-                <Button
-                  key={opt.value}
-                  onClick={() => handleAnswer(opt.value)}
-                  className="w-full text-left justify-start whitespace-normal min-h-[3.5rem]"
-                  variant="outline"
-                >
-                  {opt.label}
-                </Button>
-              ))}
+            <CardContent className="space-y-4">
+              {questions[step - 1].type === "choice" ? (
+                questions[step - 1].options.map((opt) => (
+                  <Button
+                    key={opt.prompt_value}
+                    onClick={() => handleAnswer(opt.prompt_value)}
+                    className="w-full text-left justify-start whitespace-normal min-h-[3.5rem]"
+                    variant="outline"
+                  >
+                    {opt.label}
+                  </Button>
+                ))
+              ) : (
+                <>
+                  <div className="flex justify-between text-sm text-muted-foreground px-1">
+                    <span>{questions[step - 1].options[0].label}</span>
+                    <span>{questions[step - 1].options[1].label}</span>
+                  </div>
+                  <Slider
+                    min={0}
+                    max={4}
+                    step={1}
+                    value={[sliderValue]}
+                    onValueChange={(val) => setSliderValue(val[0])}
+                  />
+                  <Button
+                    className="w-full mt-2"
+                    onClick={() => handleAnswer(sliderValue)}
+                  >
+                    Valider
+                  </Button>
+                </>
+              )}
 
               <Button variant="ghost" onClick={handleBack} className="mt-4">
                 ← Revenir
               </Button>
 
-              {/* Si c'est la dernière question, passer à la photo */}
               {step === 5 && answers[4] && (
                 <Button className="mt-4 w-full" onClick={() => setStep(6)}>
                   Continuer vers la photo
@@ -341,13 +344,13 @@ const AstronautProfile = () => {
           </Card>
         )}
 
-        {/* Step 6: Choose photo method */}
+        {/* Step 6 choose photo */}
         {step === 6 && (
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center">
                 <Camera className="w-5 h-5 mr-2" />
-                Ajoutez votre photo d'astronaute
+                Ajoutez votre photo
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -356,17 +359,15 @@ const AstronautProfile = () => {
                 onClick={() => setStep(7)}
               >
                 <Camera className="w-4 h-4" />
-                Prendre un selfie spatial
+                Prendre un selfie
               </Button>
               <Button
                 variant="outline"
                 className="w-full flex items-center gap-2"
-                onClick={() => {
-                  fileInputRef.current?.click();
-                }}
+                onClick={() => fileInputRef.current?.click()}
               >
                 <Upload className="w-4 h-4" />
-                Choisir une photo existante
+                Choisir une photo
               </Button>
               <Button variant="ghost" onClick={handleBack}>
                 ← Revenir
@@ -375,11 +376,11 @@ const AstronautProfile = () => {
           </Card>
         )}
 
-        {/* Step 7: Camera */}
+        {/* Step 7 camera */}
         {step === 7 && (
           <Card>
             <CardHeader>
-              <CardTitle>Prenez votre photo d'astronaute</CardTitle>
+              <CardTitle>Prenez votre photo</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="relative">
@@ -392,7 +393,6 @@ const AstronautProfile = () => {
                 />
                 <canvas ref={canvasRef} className="hidden" />
               </div>
-
               <div className="flex gap-4">
                 {!isCameraActive ? (
                   <Button onClick={startCamera} className="flex-1">
@@ -410,7 +410,6 @@ const AstronautProfile = () => {
                   </>
                 )}
               </div>
-
               <Button variant="ghost" onClick={handleBack}>
                 ← Revenir
               </Button>
@@ -418,11 +417,11 @@ const AstronautProfile = () => {
           </Card>
         )}
 
-        {/* Step 8: Preview and confirm */}
+        {/* Step 8 preview */}
         {step === 8 && (
           <Card>
             <CardHeader>
-              <CardTitle>Confirmez votre photo d'astronaute</CardTitle>
+              <CardTitle>Confirmez votre photo</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {imagePreview && (
@@ -434,25 +433,23 @@ const AstronautProfile = () => {
                   />
                 </div>
               )}
-
               <div className="flex gap-4">
                 <Button
                   onClick={handleGenerate}
                   disabled={!selectedImage}
                   className="flex-1"
                 >
-                  Générer mon avatar d'astronaute
+                  Générer mon avatar
                 </Button>
               </div>
-
               <Button variant="ghost" onClick={handleBack}>
                 ← Revenir
               </Button>
               <p className="text-sm text-gray-300 mt-4">
                 En soumettant votre photo, vous acceptez qu'elle soit traitée
-                par une intelligence artificielle hébergée par un service tiers.{" "}
+                par une IA hébergée par un service tiers.{" "}
                 <a
-                  className="underline text-blue-400 hover:text-blue-300 italic"
+                  className="underline text-pink-400 hover:text-pink-300 italic"
                   href="https://openai.com/enterprise-privacy/"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -464,47 +461,43 @@ const AstronautProfile = () => {
           </Card>
         )}
 
-        {/* Step 9: Loading */}
+        {/* Step 9 loading */}
         {step === 9 && (
           <div className="text-center space-y-6 py-12">
-            <Loader2 className="mx-auto animate-spin h-20 w-20 text-blue-400" />
+            <Loader2 className="mx-auto animate-spin h-20 w-20 text-pink-400" />
             <p className="text-lg text-white">{randomMessage}</p>
             <p className="text-gray-300">Génération en cours...</p>
           </div>
         )}
 
-        {/* Step 10: Result */}
+        {/* Step 10 result */}
         {step === 10 && generatedImageUrl && (
           <div className="space-y-4">
             <Card>
               <CardHeader>
                 <CardTitle className="text-center flex items-center justify-center">
-                  <Rocket className="w-6 h-6 mr-2" />
-                  Votre avatar d'astronaute
+                  <PartyPopper className="w-6 h-6 mr-2" />
+                  Votre avatar Event Manager
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="text-center">
-                  <p className="text-sm text-muted-foreground mb-2">
-                    Votre profil d'explorateur spatial
-                  </p>
                   <img
                     src={generatedImageUrl}
-                    alt="Avatar d'astronaute"
+                    alt="Avatar"
                     className="rounded-lg shadow-md w-full"
                   />
                 </div>
-
                 <div className="flex gap-4 justify-center mt-6">
                   <Button
                     className="flex-1"
-                    onClick={() => {
+                    onClick={() =>
                       window.open(
                         generatedImageUrl,
                         "_blank",
                         "noopener,noreferrer"
-                      );
-                    }}
+                      )
+                    }
                   >
                     <Download className="w-4 h-4 mr-2" />
                     Télécharger
@@ -514,7 +507,7 @@ const AstronautProfile = () => {
                     className="flex-1"
                     onClick={restart}
                   >
-                    Nouvelle mission
+                    Recommencer
                   </Button>
                 </div>
               </CardContent>
@@ -522,7 +515,7 @@ const AstronautProfile = () => {
           </div>
         )}
 
-        {/* Hidden file input */}
+        {/* Hidden input */}
         <input
           ref={fileInputRef}
           type="file"
@@ -535,4 +528,4 @@ const AstronautProfile = () => {
   );
 };
 
-export default AstronautProfile;
+export default EventManagerProfile;

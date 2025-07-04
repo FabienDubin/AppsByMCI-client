@@ -125,6 +125,9 @@ export function BackgroundPath({ user }) {
                 <Button className="m-4" onClick={() => nav("/astronaut")}>
                   L'astronaute
                 </Button>
+                <Button className="m-4" onClick={() => nav("/eventmanager")}>
+                  L'event manager
+                </Button>
               </div>
             )}
           </div>
