@@ -39,7 +39,7 @@ const messages = [
 
 const EventManagerProfile = () => {
   // STATES
-  const [step, setStep] = useState(9);
+  const [step, setStep] = useState(0);
   const [user, setUser] = useState({ name: "", gender: "Homme", email: "" });
   const [questions, setQuestions] = useState([]);
   const [allowedDomains, setAllowedDomains] = useState([]);
