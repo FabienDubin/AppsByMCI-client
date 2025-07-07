@@ -249,7 +249,7 @@ const EventManagerProfile = () => {
         />
       </Helmet>
 
-      <div className="relative z-10 max-w-xl mx-auto px-4 py-8 space-y-6">
+      <div className="relative z-10 max-w-xl mx-auto bg-black/70 rounded-xl px-6 py-8 text-center space-y-6 h-screen ">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mb-4">
             <PartyPopper className="w-12 h-12 text-pink-400 mr-3" />
@@ -417,6 +417,18 @@ const EventManagerProfile = () => {
               <Button variant="ghost" onClick={handleBack}>
                 ← Revenir
               </Button>
+              <p className="text-sm text-gray-300 mt-4">
+                En soumettant votre photo, vous acceptez qu'elle soit traitée
+                par une IA hébergée par un service tiers.{" "}
+                <a
+                  className="underline text-pink-400 hover:text-pink-300 italic"
+                  href="https://openai.com/enterprise-privacy/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  En savoir plus
+                </a>
+              </p>
             </CardContent>
           </Card>
         )}
@@ -458,6 +470,18 @@ const EventManagerProfile = () => {
               <Button variant="ghost" onClick={handleBack}>
                 ← Revenir
               </Button>
+              <p className="text-sm text-gray-300 mt-4">
+                En soumettant votre photo, vous acceptez qu'elle soit traitée
+                par une IA hébergée par un service tiers.{" "}
+                <a
+                  className="underline text-pink-400 hover:text-pink-300 italic"
+                  href="https://openai.com/enterprise-privacy/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  En savoir plus
+                </a>
+              </p>
             </CardContent>
           </Card>
         )}
@@ -508,7 +532,8 @@ const EventManagerProfile = () => {
 
         {/* Step 9 loading */}
         {step === 9 && (
-          <div className="bg-black/70 rounded-xl px-6 py-8 text-center space-y-6">
+          <div className=" rounded-xl px-6 py-8 text-center space-y-6">
+            {/* <div className="bg-black/70 rounded-xl px-6 py-8 text-center space-y-6"> */}
             <Loader2 className="mx-auto animate-spin h-20 w-20 text-pink-400" />
             <p className="text-lg text-white">{randomMessage}</p>
             <p className="text-gray-300">Génération en cours...</p>
