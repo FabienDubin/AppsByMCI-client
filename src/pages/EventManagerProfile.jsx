@@ -40,8 +40,9 @@ const messages = [
 const EventManagerProfile = () => {
   // STATES
   const [step, setStep] = useState(0);
-  const [user, setUser] = useState({ name: "", gender: "Homme", code: "" });
+  const [user, setUser] = useState({ name: "", gender: "Homme", email: "" });
   const [questions, setQuestions] = useState([]);
+  const [allowedDomains, setAllowedDomains] = useState([]);
   const [answers, setAnswers] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
@@ -50,6 +51,7 @@ const EventManagerProfile = () => {
   const [loading, setLoading] = useState(false);
   const [randomMessage, setRandomMessage] = useState("");
   const [alertMessage, setAlertMessage] = useState(null);
+  const [emailError, setEmailError] = useState("");
 
   // Slider temp value
   const [sliderValue, setSliderValue] = useState(2);
@@ -75,6 +77,7 @@ const EventManagerProfile = () => {
       try {
         const data = await eventManagerService.getConfig();
         setQuestions(data.questions);
+        setAllowedDomains(data.allowedDomains || []);
       } catch (e) {
         console.error("Erreur chargement config:", e);
       }
@@ -164,9 +167,25 @@ const EventManagerProfile = () => {
     }
   };
 
+  // Email validation
+  const validateEmail = (email) => {
+    const trimmed = email.trim();
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!regex.test(trimmed)) return "Format d'email invalide";
+    const domain = trimmed.substring(trimmed.indexOf("@"));
+    if (
+      !allowedDomains
+        .map((d) => d.trim().toLowerCase())
+        .includes(domain.toLowerCase())
+    ) {
+      return "Domaine email non autorisé";
+    }
+    return "";
+  };
+
   // Generate avatar
   const handleGenerate = async () => {
-    if (!selectedImage || !user.name || !user.code || answers.length !== 5) {
+    if (!selectedImage || !user.name || !user.email || answers.length !== 5) {
       alert("Veuillez compléter toutes les étapes avant de générer.");
       return;
     }
@@ -177,11 +196,20 @@ const EventManagerProfile = () => {
       formData.append("image", selectedImage);
       formData.append("name", user.name);
       formData.append("gender", user.gender);
-      formData.append("code", user.code);
+      formData.append("email", user.email.trim());
       formData.append("answers", JSON.stringify(answers));
       const res = await eventManagerService.submitResponse(formData);
       setOriginalImageUrl(res.originalImageUrl);
       setGeneratedImageUrl(res.generatedImageUrl);
+      if (res.emailError) {
+        setAlertMessage({
+          message: "Erreur d'envoi d'email : " + res.emailError,
+        });
+      } else if (!res.emailSent) {
+        setAlertMessage({ message: "L'email n'a pas pu être envoyé." });
+      } else {
+        setAlertMessage(null);
+      }
       setStep(10);
     } catch (err) {
       console.error(err);
@@ -195,7 +223,7 @@ const EventManagerProfile = () => {
   };
 
   const restart = () => {
-    setUser({ name: "", gender: "Homme", code: "" });
+    setUser({ name: "", gender: "Homme", email: "" });
     setAnswers([]);
     setSelectedImage(null);
     setImagePreview(null);
@@ -204,6 +232,7 @@ const EventManagerProfile = () => {
     setStep(0);
     stopCamera();
     setAlertMessage(null);
+    setEmailError("");
   };
 
   // Cleanup
@@ -274,14 +303,30 @@ const EventManagerProfile = () => {
                 ))}
               </div>
               <Input
-                placeholder="Code d'accès"
-                value={user.code}
-                onChange={(e) => setUser({ ...user, code: e.target.value })}
+                placeholder="Email professionnel"
+                value={user.email}
+                onChange={(e) => {
+                  setUser({ ...user, email: e.target.value });
+                  setEmailError("");
+                }}
+                onBlur={(e) => setEmailError(validateEmail(e.target.value))}
+                type="email"
+                autoComplete="email"
               />
+              {emailError && (
+                <div className="text-red-500 text-sm">{emailError}</div>
+              )}
               <Button
                 className="w-full mt-4"
-                onClick={() => setStep(1)}
-                disabled={!user.name || !user.code}
+                onClick={() => {
+                  const err = validateEmail(user.email);
+                  setEmailError(err);
+                  if (!user.name || err) return;
+                  setStep(1);
+                }}
+                disabled={
+                  !user.name || !user.email || !!validateEmail(user.email)
+                }
               >
                 Démarrer
               </Button>

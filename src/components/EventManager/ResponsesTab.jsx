@@ -30,7 +30,17 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
-import { Eye, ChevronLeft, ChevronRight, Trash2, EyeOff } from "lucide-react";
+import {
+  Eye,
+  ChevronLeft,
+  ChevronRight,
+  Trash2,
+  EyeOff,
+  CheckCircle2,
+  XCircle,
+  Clock,
+} from "lucide-react";
+import { Tooltip } from "@radix-ui/react-tooltip";
 
 const ResponsesTab = () => {
   const [responses, setResponses] = useState([]);
@@ -116,6 +126,37 @@ const ResponsesTab = () => {
     }
   };
 
+  const renderEmailStatus = (r) => {
+    if (r.emailSent) {
+      return (
+        <span className="flex items-center gap-1 text-green-600">
+          <CheckCircle2 className="w-4 h-4" /> Envoyé
+        </span>
+      );
+    }
+    if (r.emailError) {
+      return (
+        <Tooltip>
+          <span className="flex items-center gap-1 text-red-600">
+            <XCircle className="w-4 h-4" />
+            Erreur
+            <span
+              className="ml-1 text-xs underline cursor-help"
+              title={r.emailError}
+            >
+              (voir)
+            </span>
+          </span>
+        </Tooltip>
+      );
+    }
+    return (
+      <span className="flex items-center gap-1 text-yellow-600">
+        <Clock className="w-4 h-4" /> En attente
+      </span>
+    );
+  };
+
   return (
     <div className="space-y-4">
       <Card>
@@ -140,7 +181,8 @@ const ResponsesTab = () => {
                     <TableHead>Genre</TableHead>
                     <TableHead>Date</TableHead>
                     <TableHead>Réponses</TableHead>
-                    <TableHead>Code</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead>Statut email</TableHead>
                     <TableHead>Écran</TableHead>
                     <TableHead>Actions</TableHead>
                   </TableRow>
@@ -157,10 +199,9 @@ const ResponsesTab = () => {
                         {Array.isArray(r.answers) ? r.answers.join(", ") : ""}
                       </TableCell>
                       <TableCell>
-                        <code className="bg-muted px-2 py-1 rounded text-sm">
-                          {r.code}
-                        </code>
+                        <span className="font-mono">{r.email}</span>
                       </TableCell>
+                      <TableCell>{renderEmailStatus(r)}</TableCell>
                       <TableCell>
                         <Button
                           variant={r.isVisibleOnScreen ? "default" : "outline"}
@@ -226,6 +267,22 @@ const ResponsesTab = () => {
                                         Question {i + 1}: {a}
                                       </div>
                                     ))}
+                                  </div>
+                                </div>
+                                <div>
+                                  <h4 className="font-semibold mb-2">Email</h4>
+                                  <div>
+                                    <span className="font-mono">
+                                      {selectedResponse.email}
+                                    </span>
+                                  </div>
+                                  <div className="mt-1">
+                                    {renderEmailStatus(selectedResponse)}
+                                    {selectedResponse.emailError && (
+                                      <div className="text-xs text-red-600 mt-1">
+                                        {selectedResponse.emailError}
+                                      </div>
+                                    )}
                                   </div>
                                 </div>
                                 <AlertDialog>

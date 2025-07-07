@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/accordion";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { X } from "lucide-react";
 
 const createDefaultQuestion = () => ({
   text: "",
@@ -21,7 +22,8 @@ const createDefaultQuestion = () => ({
 
 const ConfigTab = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [code, setCode] = useState("");
+  const [allowedDomains, setAllowedDomains] = useState([]);
+  const [newDomain, setNewDomain] = useState("");
   const [questions, setQuestions] = useState(
     Array(5).fill(null).map(createDefaultQuestion)
   );
@@ -32,7 +34,7 @@ const ConfigTab = () => {
   const fetchConfig = async () => {
     try {
       const config = await eventManagerService.getConfig();
-      setCode(config.code || "");
+      setAllowedDomains(config.allowedDomains || []);
       setPromptTemplate(config.promptTemplate || "");
       setQuestions(
         config.questions && config.questions.length === 5
@@ -58,8 +60,31 @@ const ConfigTab = () => {
     setQuestions(updated);
   };
 
+  const handleAddDomain = () => {
+    const domain = newDomain.trim();
+    if (
+      !domain.startsWith("@") ||
+      !domain.includes(".") ||
+      allowedDomains.includes(domain)
+    ) {
+      toast({
+        title: "Erreur",
+        description:
+          "Le domaine doit commencer par @, contenir un point, et ne pas être déjà présent.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setAllowedDomains([...allowedDomains, domain]);
+    setNewDomain("");
+  };
+
+  const handleRemoveDomain = (domain) => {
+    setAllowedDomains(allowedDomains.filter((d) => d !== domain));
+  };
+
   const handleSubmit = async () => {
-    const body = { code, promptTemplate, questions };
+    const body = { allowedDomains, promptTemplate, questions };
     try {
       await eventManagerService.updateConfig(body);
       toast({
@@ -83,7 +108,8 @@ const ConfigTab = () => {
   return (
     <div className="w-full min-h-screen">
       <h1 className="text-center text-lg font-medium my-4">
-        Configurez les questions du quiz Event Manager et le prompt.
+        Configurez les questions du quiz Event Manager, le prompt et les
+        domaines autorisés.
       </h1>
       {isLoading && (
         <div className="flex items-center justify-center h-screen">
@@ -93,6 +119,48 @@ const ConfigTab = () => {
       {!isLoading && (
         <>
           <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="domains">
+              <AccordionTrigger>Domaines autorisés</AccordionTrigger>
+              <AccordionContent>
+                <div className="mb-2">
+                  {allowedDomains.length === 0 && (
+                    <div className="text-muted-foreground text-sm mb-2">
+                      Aucun domaine autorisé.
+                    </div>
+                  )}
+                  <ul className="mb-2">
+                    {allowedDomains.map((domain) => (
+                      <li key={domain} className="flex items-center gap-2 mb-1">
+                        <span className="font-mono">{domain}</span>
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          onClick={() => handleRemoveDomain(domain)}
+                          aria-label="Supprimer"
+                        >
+                          <X className="w-4 h-4" />
+                        </Button>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="flex gap-2">
+                    <Input
+                      placeholder="@exemple.com"
+                      value={newDomain}
+                      onChange={(e) => setNewDomain(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") handleAddDomain();
+                      }}
+                    />
+                    <Button onClick={handleAddDomain}>Ajouter</Button>
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-1">
+                    Exemple : <span className="font-mono">@wearemci.com</span>
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
             {questions.map((q, qi) => (
               <AccordionItem key={qi} value={`q${qi}`}>
                 <AccordionTrigger>Question {qi + 1}</AccordionTrigger>
@@ -141,17 +209,6 @@ const ConfigTab = () => {
                 </AccordionContent>
               </AccordionItem>
             ))}
-
-            <AccordionItem value="code">
-              <AccordionTrigger>Code d'accès</AccordionTrigger>
-              <AccordionContent>
-                <Input
-                  value={code}
-                  onChange={(e) => setCode(e.target.value)}
-                  placeholder="Code"
-                />
-              </AccordionContent>
-            </AccordionItem>
 
             <AccordionItem value="prompt">
               <AccordionTrigger>Prompt template</AccordionTrigger>
