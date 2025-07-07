@@ -36,6 +36,12 @@ const EventManagerDashboard = () => {
         >
           Go to the app <SquareArrowOutUpRight />
         </Button>
+        <Button
+          variant="ghost"
+          onClick={() => window.open("/eventmanager/screen", "_blank")}
+        >
+          Open screen <SquareArrowOutUpRight />
+        </Button>
       </div>
 
       <Tabs defaultValue="responses" className="w-full">
