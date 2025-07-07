@@ -37,6 +37,7 @@ import AstronautProfile from "./pages/AstronautProfile";
 import AstronautDashboard from "./pages/Dashboard/AstronautDashboard";
 import EventManagerProfile from "./pages/EventManagerProfile";
 import EventManagerDashboard from "./pages/Dashboard/EventManagerDashboard";
+import EventManagerScreen from "./pages/EventManagerScreen";
 
 function App() {
   //LOCATION
@@ -50,6 +51,7 @@ function App() {
     "/adventurer",
     "/astronaut",
     "/eventmanager",
+    "/eventmanager/screen",
   ];
   const hideNavbar =
     noNavbarRoutes.includes(location.pathname) ||
@@ -154,6 +156,12 @@ function App() {
 
             {/* Page to event manager profile app */}
             <Route path="/eventmanager" element={<EventManagerProfile />} />
+
+            {/* Page to event manager screen for events */}
+            <Route
+              path="/eventmanager/screen"
+              element={<EventManagerScreen />}
+            />
 
             <Route path="/not-authorized" element={<NotAuthorized />} />
             <Route path="*" element={<NotFound />} />

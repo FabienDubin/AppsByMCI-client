@@ -55,6 +55,20 @@ class EventManagerService {
     const res = await this.api.delete(`/eventmanager/results/${id}`);
     return res.data;
   };
+
+  // GET /eventmanager/screen/images
+  getScreenImages = async (limit = 12) => {
+    const res = await this.api.get(
+      `/eventmanager/screen/images?limit=${limit}`
+    );
+    return res.data;
+  };
+
+  // PUT /eventmanager/results/:id/visibility
+  toggleVisibility = async (id) => {
+    const res = await this.api.put(`/eventmanager/results/${id}/visibility`);
+    return res.data;
+  };
 }
 
 const eventManagerService = new EventManagerService();

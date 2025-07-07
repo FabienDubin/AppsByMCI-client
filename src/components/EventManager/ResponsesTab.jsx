@@ -30,7 +30,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
-import { Eye, ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
+import { Eye, ChevronLeft, ChevronRight, Trash2, EyeOff } from "lucide-react";
 
 const ResponsesTab = () => {
   const [responses, setResponses] = useState([]);
@@ -97,6 +97,25 @@ const ResponsesTab = () => {
     }
   };
 
+  const handleToggleVisibility = async (responseId) => {
+    try {
+      const result = await eventManagerService.toggleVisibility(responseId);
+      toast({
+        title: "Visibilité mise à jour",
+        description: result.isVisibleOnScreen
+          ? "Image visible sur l'écran"
+          : "Image masquée de l'écran",
+      });
+      fetchResponses(currentPage);
+    } catch {
+      toast({
+        title: "Erreur",
+        description: "Impossible de modifier la visibilité",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="space-y-4">
       <Card>
@@ -122,6 +141,7 @@ const ResponsesTab = () => {
                     <TableHead>Date</TableHead>
                     <TableHead>Réponses</TableHead>
                     <TableHead>Code</TableHead>
+                    <TableHead>Écran</TableHead>
                     <TableHead>Actions</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -140,6 +160,25 @@ const ResponsesTab = () => {
                         <code className="bg-muted px-2 py-1 rounded text-sm">
                           {r.code}
                         </code>
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          variant={r.isVisibleOnScreen ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => handleToggleVisibility(r._id)}
+                        >
+                          {r.isVisibleOnScreen ? (
+                            <>
+                              <Eye className="w-4 h-4 mr-1" />
+                              Visible
+                            </>
+                          ) : (
+                            <>
+                              <EyeOff className="w-4 h-4 mr-1" />
+                              Masqué
+                            </>
+                          )}
+                        </Button>
                       </TableCell>
                       <TableCell>
                         <Dialog>
