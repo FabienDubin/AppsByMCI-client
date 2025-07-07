@@ -39,7 +39,7 @@ const messages = [
 
 const EventManagerProfile = () => {
   // STATES
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(9);
   const [user, setUser] = useState({ name: "", gender: "Homme", email: "" });
   const [questions, setQuestions] = useState([]);
   const [allowedDomains, setAllowedDomains] = useState([]);
@@ -508,7 +508,7 @@ const EventManagerProfile = () => {
 
         {/* Step 9 loading */}
         {step === 9 && (
-          <div className="text-center space-y-6 py-12">
+          <div className="bg-black/70 rounded-xl px-6 py-8 text-center space-y-6">
             <Loader2 className="mx-auto animate-spin h-20 w-20 text-pink-400" />
             <p className="text-lg text-white">{randomMessage}</p>
             <p className="text-gray-300">Génération en cours...</p>
