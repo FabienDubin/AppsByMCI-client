@@ -18,6 +18,7 @@ import Signup from "./pages/Signup";
 import Profile from "./pages/Profile";
 import AdminDashboard from "./pages/Dashboard/AdminDashboard";
 import UsersDashboard from "./pages/Dashboard/UsersDashboard";
+import LinksDashboard from "./pages/Dashboard/LinksDashboard";
 import NotFound from "./pages/NotFound";
 import NotAuthorized from "./pages/NotAuthorized";
 import Layout from "./components/Sidebar/Layout";
@@ -38,6 +39,8 @@ import AstronautDashboard from "./pages/Dashboard/AstronautDashboard";
 import EventManagerProfile from "./pages/EventManagerProfile";
 import EventManagerDashboard from "./pages/Dashboard/EventManagerDashboard";
 import EventManagerScreen from "./pages/EventManagerScreen";
+import LinkResolver from "./components/LinkResolver";
+import TestCalendar from "./pages/TestCalendar";
 
 function App() {
   //LOCATION
@@ -56,7 +59,8 @@ function App() {
   const hideNavbar =
     noNavbarRoutes.includes(location.pathname) ||
     location.pathname.startsWith("/dashboard") ||
-    location.pathname.startsWith("/reset-password");
+    location.pathname.startsWith("/reset-password") ||
+    location.pathname.startsWith("/links/");
 
   return (
     <>
@@ -103,6 +107,7 @@ function App() {
                         {/* Here are all the pages of the admin dashboard */}
                         <Route path="" element={<AdminDashboard />} />
                         <Route path="users" element={<UsersDashboard />} />
+                        <Route path="links" element={<LinksDashboard />} />
                         <Route
                           path="mercedes"
                           element={<MercedesDashboard />}
@@ -145,6 +150,9 @@ function App() {
             {/* Page to mercedesCLA app */}
             <Route path="/mercedesCLA" element={<MercedesCLA />} />
 
+            {/* Page to mercedesCLA app */}
+            <Route path="/calendartest" element={<TestCalendar />} />
+
             {/* Page to yearbook app */}
             <Route path="/yearbook" element={<Yearbook />} />
 
@@ -162,6 +170,9 @@ function App() {
               path="/eventmanager/screen"
               element={<EventManagerScreen />}
             />
+
+            {/* Public link resolver */}
+            <Route path="/links/:slug" element={<LinkResolver />} />
 
             <Route path="/not-authorized" element={<NotAuthorized />} />
             <Route path="*" element={<NotFound />} />

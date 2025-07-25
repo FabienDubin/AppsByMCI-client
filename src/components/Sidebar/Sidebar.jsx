@@ -27,6 +27,7 @@ import {
   Compass,
   Rocket,
   PartyPopper,
+  Link2,
 } from "lucide-react";
 
 import Logo from "../Logo";
@@ -36,6 +37,7 @@ import Logo from "../Logo";
 const items = [
   { title: "Dashboard", url: "/dashboard", icon: Home },
   { title: "Users", url: "/dashboard/users", icon: SquareUserRound },
+  { title: "Links", url: "/dashboard/links", icon: Link2 },
   { title: "Mercedes", url: "/dashboard/mercedes", icon: CarFront },
   { title: "Yearbook", url: "/dashboard/yearbook", icon: BookOpen },
   { title: "Adventurer", url: "/dashboard/adventurer", icon: Compass },
