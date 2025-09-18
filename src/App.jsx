@@ -39,6 +39,9 @@ import AstronautDashboard from "./pages/Dashboard/AstronautDashboard";
 import EventManagerProfile from "./pages/EventManagerProfile";
 import EventManagerDashboard from "./pages/Dashboard/EventManagerDashboard";
 import EventManagerScreen from "./pages/EventManagerScreen";
+import RedPortrait from "./pages/RedPortrait";
+import RedPortraitDashboard from "./pages/Dashboard/RedPortraitDashboard";
+import RedPortraitScreen from "./pages/RedPortraitScreen";
 import LinkResolver from "./components/LinkResolver";
 import TestCalendar from "./pages/TestCalendar";
 
@@ -55,6 +58,8 @@ function App() {
     "/astronaut",
     "/eventmanager",
     "/eventmanager/screen",
+    "/redportrait",
+    "/redportrait/screen",
   ];
   const hideNavbar =
     noNavbarRoutes.includes(location.pathname) ||
@@ -129,6 +134,10 @@ function App() {
                           element={<EventManagerDashboard />}
                         />
                         <Route
+                          path="redportrait"
+                          element={<RedPortraitDashboard />}
+                        />
+                        <Route
                           path="settings"
                           element={<SettingsDashboard />}
                         />
@@ -169,6 +178,15 @@ function App() {
             <Route
               path="/eventmanager/screen"
               element={<EventManagerScreen />}
+            />
+
+            {/* Page to Red Portrait app */}
+            <Route path="/redportrait" element={<RedPortrait />} />
+
+            {/* Page to Red Portrait screen */}
+            <Route
+              path="/redportrait/screen"
+              element={<RedPortraitScreen />}
             />
 
             {/* Public link resolver */}
