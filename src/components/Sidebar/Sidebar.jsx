@@ -44,7 +44,7 @@ const items = [
   { title: "Adventurer", url: "/dashboard/adventurer", icon: Compass },
   { title: "Astronaut", url: "/dashboard/astronaut", icon: Rocket },
   { title: "Event Manager", url: "/dashboard/eventmanager", icon: PartyPopper },
-  { title: "Red Portrait", url: "/dashboard/redportrait", icon: Palette },
+  { title: "Clarins", url: "/dashboard/clarins", icon: Palette },
   // { title: "Setting", url: "/dashboard/settings", icon: Settings2 },
 ];
 
