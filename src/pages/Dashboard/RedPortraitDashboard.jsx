@@ -2,12 +2,7 @@ import React from "react";
 import { Helmet } from "react-helmet-async";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import {
-  Palette,
-  Cog,
-  Images,
-  SquareArrowOutUpRight,
-} from "lucide-react";
+import { Palette, Cog, Images, SquareArrowOutUpRight } from "lucide-react";
 
 import ConfigTab from "@/components/RedPortrait/ConfigTab";
 import ResponsesTab from "@/components/RedPortrait/ResponsesTab";
@@ -30,13 +25,13 @@ const RedPortraitDashboard = () => {
         </h1>
         <Button
           variant="ghost"
-          onClick={() => window.open("/redportrait", "_blank")}
+          onClick={() => window.open("/clarins", "_blank")}
         >
           Go to the app <SquareArrowOutUpRight />
         </Button>
         <Button
           variant="ghost"
-          onClick={() => window.open("/redportrait/screen", "_blank")}
+          onClick={() => window.open("/clarins/screen", "_blank")}
         >
           Open screen <SquareArrowOutUpRight />
         </Button>

@@ -3,7 +3,13 @@ import { useNavigate } from "react-router-dom";
 import redPortraitService from "@/services/redportrait.service";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Label } from "@/components/ui/label";
 import {
@@ -63,7 +69,7 @@ const RedPortrait = () => {
   useEffect(() => {
     if (loading) {
       const interval = setInterval(() => {
-        const randomMessage = 
+        const randomMessage =
           loadingMessages[Math.floor(Math.random() * loadingMessages.length)];
         setLoadingMessage(randomMessage);
       }, 2000);
@@ -82,7 +88,7 @@ const RedPortrait = () => {
 
   const handleValidateCode = async () => {
     setError("");
-    
+
     if (!formData.accessCode || !formData.name || !formData.email) {
       setError("Tous les champs sont obligatoires");
       return;
@@ -135,12 +141,12 @@ const RedPortrait = () => {
     if (videoRef.current && canvasRef.current) {
       const canvas = canvasRef.current;
       const video = videoRef.current;
-      
+
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
-      
+
       const ctx = canvas.getContext("2d");
-      
+
       if (facingMode === "user") {
         ctx.scale(-1, 1);
         ctx.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
@@ -148,13 +154,17 @@ const RedPortrait = () => {
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
       }
 
-      canvas.toBlob((blob) => {
-        const file = new File([blob], "selfie.jpg", { type: "image/jpeg" });
-        setSelectedImage(file);
-        setImagePreview(canvas.toDataURL("image/jpeg"));
-        stopCamera();
-        setStep(4); // Go to preview step
-      }, "image/jpeg", 0.9);
+      canvas.toBlob(
+        (blob) => {
+          const file = new File([blob], "selfie.jpg", { type: "image/jpeg" });
+          setSelectedImage(file);
+          setImagePreview(canvas.toDataURL("image/jpeg"));
+          stopCamera();
+          setStep(4); // Go to preview step
+        },
+        "image/jpeg",
+        0.9
+      );
     }
   };
 
@@ -200,7 +210,8 @@ const RedPortrait = () => {
     } catch (error) {
       console.error("Erreur:", error);
       setError(
-        error.response?.data?.error || "Erreur lors de la génération du portrait"
+        error.response?.data?.error ||
+          "Erreur lors de la génération du portrait"
       );
     } finally {
       setLoading(false);
@@ -250,16 +261,17 @@ const RedPortrait = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-950 via-black to-red-950">
       <Helmet>
-        <title>Red Portrait - Transformation artistique</title>
-        <meta name="description" content="Transformez votre portrait en œuvre d'art rouge et noir" />
+        <title>Clarins - Transformation artistique</title>
+        <meta
+          name="description"
+          content="Transformez votre portrait en œuvre d'art rouge et noir"
+        />
       </Helmet>
 
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-red-500 mb-2">
-              Red Portrait
-            </h1>
+            <h1 className="text-4xl font-bold text-red-500 mb-2">Clarins</h1>
             <p className="text-gray-300">
               Transformez votre selfie en œuvre d'art rouge et noir
             </p>
@@ -288,7 +300,10 @@ const RedPortrait = () => {
                     placeholder="Entrez le code"
                     value={formData.accessCode}
                     onChange={(e) =>
-                      setFormData({ ...formData, accessCode: e.target.value.toUpperCase() })
+                      setFormData({
+                        ...formData,
+                        accessCode: e.target.value.toUpperCase(),
+                      })
                     }
                     className="bg-gray-800 border-gray-700 text-white"
                   />
@@ -301,7 +316,7 @@ const RedPortrait = () => {
                   <Input
                     id="name"
                     type="text"
-                    placeholder="Jean Dupont"
+                    placeholder="Marie"
                     value={formData.name}
                     onChange={(e) =>
                       setFormData({ ...formData, name: e.target.value })
@@ -317,7 +332,7 @@ const RedPortrait = () => {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="jean@example.com"
+                    placeholder="marie@clarins.com"
                     value={formData.email}
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
@@ -394,23 +409,35 @@ const RedPortrait = () => {
                     autoPlay
                     playsInline
                     className="w-full rounded-lg"
-                    style={{ transform: facingMode === "user" ? "scaleX(-1)" : "none" }}
+                    style={{
+                      transform: facingMode === "user" ? "scaleX(-1)" : "none",
+                    }}
                   />
                   <canvas ref={canvasRef} className="hidden" />
                 </div>
 
                 <div className="flex gap-4">
                   {!isCameraActive ? (
-                    <Button onClick={startCamera} className="flex-1 bg-red-600 hover:bg-red-700">
+                    <Button
+                      onClick={startCamera}
+                      className="flex-1 bg-red-600 hover:bg-red-700"
+                    >
                       <Camera className="w-4 h-4 mr-2" />
                       Démarrer la caméra
                     </Button>
                   ) : (
                     <>
-                      <Button onClick={takePhoto} className="flex-1 bg-red-600 hover:bg-red-700">
+                      <Button
+                        onClick={takePhoto}
+                        className="flex-1 bg-red-600 hover:bg-red-700"
+                      >
                         Prendre la photo
                       </Button>
-                      <Button variant="outline" onClick={stopCamera} className="border-red-500 text-red-400">
+                      <Button
+                        variant="outline"
+                        onClick={stopCamera}
+                        className="border-red-500 text-red-400"
+                      >
                         Arrêter
                       </Button>
                     </>

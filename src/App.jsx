@@ -134,7 +134,7 @@ function App() {
                           element={<EventManagerDashboard />}
                         />
                         <Route
-                          path="redportrait"
+                          path="clarins"
                           element={<RedPortraitDashboard />}
                         />
                         <Route
@@ -181,13 +181,10 @@ function App() {
             />
 
             {/* Page to Red Portrait app */}
-            <Route path="/redportrait" element={<RedPortrait />} />
+            <Route path="/clarins" element={<RedPortrait />} />
 
             {/* Page to Red Portrait screen */}
-            <Route
-              path="/redportrait/screen"
-              element={<RedPortraitScreen />}
-            />
+            <Route path="/clarins/screen" element={<RedPortraitScreen />} />
 
             {/* Public link resolver */}
             <Route path="/links/:slug" element={<LinkResolver />} />
