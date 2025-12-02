@@ -42,6 +42,8 @@ import EventManagerScreen from "./pages/EventManagerScreen";
 import RedPortrait from "./pages/RedPortrait";
 import RedPortraitDashboard from "./pages/Dashboard/RedPortraitDashboard";
 import RedPortraitScreen from "./pages/RedPortraitScreen";
+import PowerUpProfile from "./pages/PowerUpProfile";
+import PowerUpDashboard from "./pages/Dashboard/PowerUpDashboard";
 import LinkResolver from "./components/LinkResolver";
 import TestCalendar from "./pages/TestCalendar";
 
@@ -60,6 +62,7 @@ function App() {
     "/eventmanager/screen",
     "/redportrait",
     "/redportrait/screen",
+    "/powerup",
   ];
   const hideNavbar =
     noNavbarRoutes.includes(location.pathname) ||
@@ -138,6 +141,10 @@ function App() {
                           element={<RedPortraitDashboard />}
                         />
                         <Route
+                          path="powerup"
+                          element={<PowerUpDashboard />}
+                        />
+                        <Route
                           path="settings"
                           element={<SettingsDashboard />}
                         />
@@ -185,6 +192,9 @@ function App() {
 
             {/* Page to Red Portrait screen */}
             <Route path="/clarins/screen" element={<RedPortraitScreen />} />
+
+            {/* Page to Power Up superhero avatar app */}
+            <Route path="/powerup" element={<PowerUpProfile />} />
 
             {/* Public link resolver */}
             <Route path="/links/:slug" element={<LinkResolver />} />

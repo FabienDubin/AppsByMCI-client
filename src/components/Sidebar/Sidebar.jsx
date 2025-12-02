@@ -29,6 +29,7 @@ import {
   PartyPopper,
   Link2,
   Palette,
+  Zap,
 } from "lucide-react";
 
 import Logo from "../Logo";
@@ -45,6 +46,7 @@ const items = [
   { title: "Astronaut", url: "/dashboard/astronaut", icon: Rocket },
   { title: "Event Manager", url: "/dashboard/eventmanager", icon: PartyPopper },
   { title: "Clarins", url: "/dashboard/clarins", icon: Palette },
+  { title: "Power Up", url: "/dashboard/powerup", icon: Zap },
   // { title: "Setting", url: "/dashboard/settings", icon: Settings2 },
 ];
 
