@@ -49,6 +49,7 @@ const ConfigTab = () => {
   const [profiles, setProfiles] = useState(
     Array(4).fill(null).map(createDefaultProfile)
   );
+  const [systemPrompt, setSystemPrompt] = useState("");
   const [promptTemplate, setPromptTemplate] = useState("");
   const [backgroundImageUrl, setBackgroundImageUrl] = useState("");
   const [logoImageUrl, setLogoImageUrl] = useState("");
@@ -60,6 +61,7 @@ const ConfigTab = () => {
       const config = await powerUpService.getConfig();
       setCode(config.code || "");
       setAllowedDomains(config.allowedDomains || []);
+      setSystemPrompt(config.systemPrompt || "");
       setPromptTemplate(config.promptTemplate || "");
       setBackgroundImageUrl(config.backgroundImageUrl || "");
       setLogoImageUrl(config.logoImageUrl || "");
@@ -136,7 +138,7 @@ const ConfigTab = () => {
   };
 
   const handleSubmit = async () => {
-    const body = { code, allowedDomains, promptTemplate, questions, profiles, backgroundImageUrl, logoImageUrl };
+    const body = { code, allowedDomains, systemPrompt, promptTemplate, questions, profiles, backgroundImageUrl, logoImageUrl };
     try {
       await powerUpService.updateConfig(body);
       toast({
@@ -407,11 +409,32 @@ const ConfigTab = () => {
               </AccordionItem>
             ))}
 
-            {/* Prompt template */}
-            <AccordionItem value="prompt">
-              <AccordionTrigger>Prompt template</AccordionTrigger>
+            {/* System Prompt */}
+            <AccordionItem value="system-prompt">
+              <AccordionTrigger>System Prompt (instructions images)</AccordionTrigger>
               <AccordionContent>
                 <div className="mb-2 text-sm text-muted-foreground">
+                  Ce prompt contient les instructions pour les images de référence.
+                  <br />
+                  <strong>Images envoyées :</strong> Image 1 = selfie, Image 2 = fond vert, Image 3 = logo
+                  <br />
+                  Variable disponible : {"{{promptTemplate}}"} (sera remplacé par le prompt template ci-dessous)
+                </div>
+                <Textarea
+                  className="h-64"
+                  value={systemPrompt}
+                  onChange={(e) => setSystemPrompt(e.target.value)}
+                />
+              </AccordionContent>
+            </AccordionItem>
+
+            {/* Prompt template */}
+            <AccordionItem value="prompt">
+              <AccordionTrigger>Prompt template (profil)</AccordionTrigger>
+              <AccordionContent>
+                <div className="mb-2 text-sm text-muted-foreground">
+                  Ce prompt décrit le profil super-héros. Il sera injecté dans le System Prompt via {"{{promptTemplate}}"}.
+                  <br />
                   Variables disponibles : {"{{name}}"}, {"{{gender}}"}, {"{{profileName}}"},{" "}
                   {"{{profilePitch}}"}, {"{{emblem}}"}, {"{{backgroundStyle}}"}
                 </div>
