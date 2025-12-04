@@ -19,9 +19,11 @@ function AuthProviderWrapper({ children }) {
     localStorage.setItem("authToken", token);
   };
 
-  //Verify the token and update the user state if the token is valid
-  const authenticateUser = () => {
+  // Verify the token and update the user state if the token is valid
+  // Returns a Promise to allow proper await usage
+  const authenticateUser = async () => {
     setIsLoading(true);
+
     // Get the stored token from the localStorage
     const storedToken = localStorage.getItem("authToken");
 
@@ -32,33 +34,34 @@ function AuthProviderWrapper({ children }) {
       return;
     }
 
-    // If the token exists in the localStorage
-    if (storedToken) {
-      // call the authService to verify the token and update the user state if the token is valid
-      authService
-        .verify()
-        .then((response) => {
-          // If the server verifies that JWT token is valid  ✅
-          const user = response.data;
-          // console.log(user);
+    // Timeout to prevent infinite loading (10 seconds)
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error("Authentication timeout")), 10000);
+    });
 
-          // Update state variables
-          setIsLoggedIn(true);
-          setIsLoading(false);
-          setUser(user);
-        })
-        .catch((error) => {
-          // If the server sends an error response (invalid token) ❌
-          // Update state variables
-          setIsLoggedIn(false);
-          setIsLoading(false);
-          setUser(null);
-        });
-    } else {
-      // If the token is not available
+    try {
+      // Race between the verify call and the timeout
+      const response = await Promise.race([
+        authService.verify(),
+        timeoutPromise,
+      ]);
+
+      // If the server verifies that JWT token is valid
+      const user = response.data;
+      setIsLoggedIn(true);
+      setUser(user);
+    } catch (error) {
+      // If the server sends an error response (invalid token) or timeout
+      console.error("Authentication error:", error.message);
       setIsLoggedIn(false);
-      setIsLoading(false);
       setUser(null);
+      // Clear invalid token to prevent future issues
+      if (error.message === "Authentication timeout") {
+        localStorage.removeItem("authToken");
+      }
+    } finally {
+      // Always set loading to false, no matter what happens
+      setIsLoading(false);
     }
   };
 
